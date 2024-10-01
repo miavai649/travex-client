@@ -2,6 +2,7 @@
 
 import TForm from "@/src/components/form/TForm"
 import TInput from "@/src/components/form/TInput"
+import TPasswordInput from "@/src/components/form/TPasswordInput"
 import { ThemeSwitch } from "@/src/components/ui/theme-switch"
 import { Button } from "@nextui-org/button"
 import Link from "next/link"
@@ -37,7 +38,7 @@ const page = () => {
     <div className='flex h-screen w-full items-center justify-center'>
       {/* {isPending && <Loading />} */}
       <div className='relative flex w-full max-w-md flex-col items-center justify-center rounded-lg border px-8 py-6 bg-default-100 border-default-200 transition-transform duration-500 transform opacity-100'>
-     {/* theme toggole switch */}
+        {/* theme toggle switch */}
         <div className='absolute top-4 right-4'>
           <ThemeSwitch />
         </div>
@@ -49,15 +50,20 @@ const page = () => {
           Welcome Back! Let's Get Started
         </p>
 
-       {/* login form */}
+        {/* login form */}
         <div className='w-full'>
           <TForm onSubmit={onSubmit}>
             <div className='py-3'>
-              <TInput name='email' label='Email' type='email' />
+              <TInput name='email' placeholder="Enter your email" label='Email' type='email' />
             </div>
 
             <div className='py-3'>
-              <TInput name='password' label='Password' type='password' />
+              <TPasswordInput
+                name='password'
+                placeholder="Enter your password"
+                label='Password'
+                type='password'
+              />
             </div>
 
             <Button

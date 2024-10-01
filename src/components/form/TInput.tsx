@@ -10,6 +10,7 @@ const TInput = ({
   variant = 'bordered',
   size = 'md',
   isRequired = false,
+  placeholder,
   type = 'text',
   label,
   name
@@ -26,6 +27,7 @@ const TInput = ({
       {...register(name)}
       variant={variant}
       size={size}
+      placeholder={placeholder}
       isRequired={isRequired}
       type={type}
       label={label}

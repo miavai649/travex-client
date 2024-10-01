@@ -9,6 +9,7 @@ export interface IInput {
   size?: 'sm' | 'md' | 'lg'
   required?: boolean
   type?: string
+  placeholder?: string
   label: string
   name: string
   isRequired?: boolean
