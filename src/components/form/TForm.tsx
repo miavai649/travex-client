@@ -12,7 +12,7 @@ interface IProps extends IFormConfig {
   children: ReactNode
 }
 
-const FXForm = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
+const TForm = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
   const formConfig: IFormConfig = {}
 
   if (!!defaultValues) {
@@ -34,4 +34,4 @@ const FXForm = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
   )
 }
 
-export default FXForm
+export default TForm
