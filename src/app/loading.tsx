@@ -1,7 +1,9 @@
+import Loading from "../components/ui/Loading"
+
 const loading = () => {
   return (
     <div>
-      <h1> Global Loading.... </h1>
+     <Loading/>
     </div>
   )
 }
