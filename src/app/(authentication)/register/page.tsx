@@ -2,10 +2,17 @@
 import TForm from '@/src/components/form/TForm'
 import TInput from '@/src/components/form/TInput'
 import TPasswordInput from '@/src/components/form/TPasswordInput'
+import TSelect from '@/src/components/form/TSelect'
 import { ThemeSwitch } from '@/src/components/ui/theme-switch'
 import { Button } from '@nextui-org/button'
 import Link from 'next/link'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
+
+const genderOptions = [
+  { key: 'Male', label: 'male' },
+  { key: 'Female', label: 'female' },
+  { key: 'Other', label: 'other' }
+]
 
 const page = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -64,6 +71,15 @@ const page = () => {
                 placeholder='Confirm your password'
                 label='Confirm Password'
                 type='password'
+              />
+            </div>
+
+            <div className='py-3'>
+              <TSelect
+                name='gender'
+                options={genderOptions}
+                label='Gender'
+                placeholder='Select your gender'
               />
             </div>
 
