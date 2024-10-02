@@ -14,25 +14,29 @@ import clsx from 'clsx'
 
 import { siteConfig } from '../../config/site'
 import { ThemeSwitch } from './theme-switch'
-import { Logo } from '../../assets/icons'
+import { TravexLogo } from '@/src/assets/icons'
 
 export const Navbar = () => {
   return (
     <NextUINavbar maxWidth='xl' position='sticky' isBordered>
       <NavbarContent className='sm:hidden' justify='start'>
         <NavbarMenuToggle />
-        <NavbarBrand as='li' className='gap-3 max-w-fit'>
+        <NavbarBrand as='li' className='max-w-fit'>
           <NextLink className='flex justify-start items-center gap-1' href='/'>
-            <Logo />
-            <p className='font-bold text-inherit'>ACME</p>
+            <TravexLogo />
+            <p className='font-bold text-2xl tracking-wide text-blue-600'>
+              Travex
+            </p>
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarBrand as='li' className='gap-3 max-w-fit hidden sm:flex'>
+      <NavbarBrand as='li' className='max-w-fit hidden sm:flex'>
         <NextLink className='flex justify-start items-center gap-1' href='/'>
-          <Logo />
-          <p className='font-bold text-inherit'>ACME</p>
+          <TravexLogo />
+          <p className='font-bold text-2xl tracking-wide text-blue-600'>
+            Travex
+          </p>
         </NextLink>
       </NavbarBrand>
 

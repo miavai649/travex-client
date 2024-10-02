@@ -204,4 +204,38 @@ export const NextUILogo: React.FC<IconSvgProps> = (props) => {
   )
 }
 
+export const TravexLogo = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    viewBox='0 0 50 50' // Adjusted to fit tightly around the logo
+    width='40' // Set a smaller width
+    height='40' // Set a smaller height
+    fill='none'
+    {...props}>
+    {/* Circle background for the logo */}
+    <circle
+      cx='25'
+      cy='25'
+      r='23'
+      stroke='#007bff'
+      strokeWidth='2'
+      fill='none'
+    />
 
+    {/* Stylized plane icon */}
+    <path
+      d='M20 10 L40 25 L20 40 L25 25 Z'
+      fill='#007bff'
+      stroke='#007bff'
+      strokeWidth='2'
+    />
+
+    {/* Tail fin of plane */}
+    <rect x='32' y='23' width='6' height='4' fill='#007bff' />
+
+    {/* Additional details for a polished look */}
+    <circle cx='25' cy='25' r='3' fill='white' />
+    <line x1='25' y1='10' x2='25' y2='40' stroke='white' strokeWidth='1.5' />
+    <line x1='15' y1='25' x2='35' y2='25' stroke='white' strokeWidth='1.5' />
+  </svg>
+)
