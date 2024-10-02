@@ -1,4 +1,5 @@
 'use client'
+import TDatePicker from '@/src/components/form/TDatePicker'
 import TForm from '@/src/components/form/TForm'
 import TInput from '@/src/components/form/TInput'
 import TPasswordInput from '@/src/components/form/TPasswordInput'
@@ -28,7 +29,7 @@ const page = () => {
         </div>
 
         <h3 className='text-3xl font-bold text-blue-600 mb-2'>
-          Login to Travex
+          Register with Travex
         </h3>
         <p className='text-lg text-gray-600 mb-6'>
           Welcome Back! Let's Get Started
@@ -40,40 +41,10 @@ const page = () => {
             onSubmit={onSubmit}
             // resolver={zodResolver(loginValidationSchema)}
           >
+            {/* <div className='grid grid-cols-2 gap-2'> */}
             <div className='py-3'>
-              <TInput
-                name='name'
-                placeholder='Enter your name'
-                label='User Name'
-                type='text'
-              />
+              <TInput name='name' label='Name' type='text' />
             </div>
-            <div className='py-3'>
-              <TInput
-                name='email'
-                placeholder='Enter your email'
-                label='User Email'
-                type='email'
-              />
-            </div>
-
-            <div className='py-3'>
-              <TPasswordInput
-                name='password'
-                placeholder='Enter your password'
-                label='Password'
-                type='password'
-              />
-            </div>
-            <div className='py-3'>
-              <TPasswordInput
-                name='confirmPassword'
-                placeholder='Confirm your password'
-                label='Confirm Password'
-                type='password'
-              />
-            </div>
-
             <div className='py-3'>
               <TSelect
                 name='gender'
@@ -82,6 +53,33 @@ const page = () => {
                 placeholder='Select your gender'
               />
             </div>
+            <div className='py-3'>
+              <TInput name='email' label='Email' type='email' />
+            </div>
+
+            <div className='py-3'>
+              <TInput name='mobileNumber' label='Mobile Number' type='text' />
+            </div>
+
+            <div className='py-3'>
+              <TDatePicker name='birthDate' label='Birth date' />
+            </div>
+
+            <div className='py-3'>
+              <TPasswordInput
+                name='password'
+                label='Password'
+                type='password'
+              />
+            </div>
+            <div className='py-3'>
+              <TPasswordInput
+                name='confirmPassword'
+                label='Confirm Password'
+                type='password'
+              />
+            </div>
+            {/* </div> */}
 
             <Button
               className='w-full py-2 mt-4 rounded-lg bg-blue-600 text-white font-semibold transition duration-300 transform hover:scale-105 '
