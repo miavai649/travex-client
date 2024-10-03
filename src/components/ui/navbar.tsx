@@ -1,3 +1,4 @@
+'use client'
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -15,8 +16,17 @@ import clsx from 'clsx'
 import { siteConfig } from '../../config/site'
 import { ThemeSwitch } from './theme-switch'
 import { TravexLogo } from '@/src/assets/icons'
+import { useAppSelector } from '@/src/redux/hook'
+import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
+import NavbarDropdown from './NavbarDropDown'
+import { Button } from '@nextui-org/button'
+import { useRouter } from 'next/navigation'
 
 export const Navbar = () => {
+  const user = useAppSelector(useCurrentUser)
+
+  const router = useRouter()
+
   return (
     <NextUINavbar maxWidth='xl' position='sticky' isBordered>
       <NavbarContent className='sm:hidden' justify='start'>
@@ -66,6 +76,19 @@ export const Navbar = () => {
         <NavbarItem className='hidden sm:flex gap-2'>
           <ThemeSwitch />
         </NavbarItem>
+        {user?.email ? (
+          <NavbarItem className='hidden sm:flex gap-2'>
+            <NavbarDropdown />
+          </NavbarItem>
+        ) : (
+          <NavbarItem className='hidden sm:flex gap-2'>
+            <Button
+              onClick={() => router.push('/login')}
+              className=' bg-blue-600 text-white font-semibold transition duration-300 transform hover:scale-105'>
+              Login
+            </Button>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       <NavbarContent className='sm:hidden basis-1 pl-4' justify='end'>

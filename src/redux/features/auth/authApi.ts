@@ -1,3 +1,4 @@
+import { TResponseRedux, TUser } from '@/src/types'
 import { baseApi } from '../../api/baseApi'
 
 const authApi = baseApi.injectEndpoints({
@@ -34,6 +35,19 @@ const authApi = baseApi.injectEndpoints({
           }
         }
       }
+    }),
+    getCurrentUser: builder.query({
+      query: () => {
+        return {
+          url: '/user/current-user',
+          method: 'GET'
+        }
+      },
+      transformResponse: (response: TResponseRedux<TUser>) => {
+        return {
+          data: response.data
+        }
+      }
     })
   })
 })
@@ -42,5 +56,6 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useForgetPasswordMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
+  useGetCurrentUserQuery
 } = authApi

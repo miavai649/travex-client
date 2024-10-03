@@ -1,3 +1,4 @@
+import { BaseQueryApi } from '@reduxjs/toolkit/query'
 import { SVGProps } from 'react'
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
@@ -30,4 +31,27 @@ export type TResponse<T> = {
   error?: TError
   success: boolean
   message: string
+}
+
+export type TResponseRedux<T> = TResponse<T> & BaseQueryApi
+
+export type TUser = {
+  _id: string
+  name: string
+  email: string
+  password: string
+  gender: string
+  role: string
+  profileImage: string
+  bio: any
+  birthDate: string
+  status: string
+  mobileNumber: string
+  address: any
+  isVerified: boolean
+  followers: any[]
+  following: any[]
+  createdAt: string
+  updatedAt: string
+  __v: number
 }
