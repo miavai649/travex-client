@@ -1,13 +1,21 @@
-import { useGetAllPost } from '@/src/hook/post.hook'
+import Container from '@/src/components/ui/Container'
+import PostCard from '@/src/components/ui/post'
 
-const page = () => {
-  const { data: postData } = useGetAllPost()
-  console.log('🚀 ~ page ~ postData:', postData)
+const page = async () => {
+  const fetchOptions = {
+    next: {
+      tags: ['posts']
+    }
+  }
+
+  const res = await fetch('http://localhost:5000/api/post', fetchOptions)
+
+  const data = await res.json()
 
   return (
-    <div>
-      <h1>This is news feed page</h1>
-    </div>
+    <Container>
+      <PostCard />
+    </Container>
   )
 }
 
