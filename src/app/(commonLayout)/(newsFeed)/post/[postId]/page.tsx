@@ -19,6 +19,7 @@ import { useGetSinglePostQuery } from '@/src/redux/features/post/postApi'
 import Loading from '@/src/components/ui/Loading'
 import DetailPageImageGallery from '@/src/components/ui/post/DetailPageImageGallery'
 import PostDetailsCard from '@/src/components/ui/post/PostDetailsCard'
+import { useGetMyCommentQuery } from '@/src/redux/features/comment/commentApi'
 
 // Dummy data for comments (unchanged)
 const dummyComments = [
@@ -70,7 +71,11 @@ export default function PostDetails({ params }: IProps) {
     }
   }
 
+  // getting single post data
   const { data: postData, isLoading } = useGetSinglePostQuery(params.postId)
+
+  // getting comments for that individual post
+  const { data: commentData } = useGetMyCommentQuery(postData?.data?._id)
 
   return (
     <div className='max-w-4xl mx-auto px-4 py-8'>
@@ -97,20 +102,20 @@ export default function PostDetails({ params }: IProps) {
             </Button>
           </form>
           <div className='space-y-6'>
-            {comments.map((comment) => (
-              <div key={comment.id} className='flex items-start'>
+            {commentData?.data?.map((comment) => (
+              <div key={comment?._id} className='flex items-start'>
                 <Avatar
-                  src={comment.profileImage}
-                  alt={comment.author}
+                  src={comment?.commenter?.profileImage}
+                  alt={comment?.commenter?.name}
                   className='mr-4'
                 />
                 <div>
-                  <p className='font-semibold'>{comment.author}</p>
+                  <p className='font-semibold'>{comment?.commenter?.name}</p>
                   <p className='text-sm text-default-500 mb-2'>
-                    {format(new Date(comment.createdAt), 'MMM dd, yyyy HH:mm')}
+                    {format(new Date(comment?.createdAt), 'MMM dd, yyyy HH:mm')}
                   </p>
                   <p className='text-default-700 dark:text-default-400'>
-                    {comment.content}
+                    {comment?.comment}
                   </p>
                 </div>
               </div>
