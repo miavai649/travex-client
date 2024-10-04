@@ -16,28 +16,28 @@ interface IProps {
 }
 
 const ImageGallery = ({ images }: IProps) => {
-  const visibleImages = images.slice(0, 4)
-  const remainingCount = images.length - 4
+  const visibleImages = images?.slice(0, 4)
+  const remainingCount = images?.length - 4
 
   return (
     <LightGallery
       elementClassNames={`mb-4 gap-2 grid ${
-        visibleImages.length === 1
+        visibleImages?.length === 1
           ? 'grid-cols-1'
-          : visibleImages.length === 2
+          : visibleImages?.length === 2
             ? 'grid-cols-2'
             : 'grid-cols-2 grid-rows-2'
       }`}
       speed={500}
       plugins={[lgThumbnail, lgZoom]}>
-      {visibleImages.map((image, index) => (
+      {visibleImages?.map((image, index) => (
         <Link
           key={index}
           className={`relative w-full ${
-            visibleImages.length === 3 && index === 0
+            visibleImages?.length === 3 && index === 0
               ? 'col-span-2'
               : 'col-span-1'
-          } ${visibleImages.length === 1 ? 'h-96' : 'h-48'}`}
+          } ${visibleImages?.length === 1 ? 'h-96' : 'h-48'}`}
           href={image}>
           <Image
             className='rounded-lg object-cover'

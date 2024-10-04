@@ -1,5 +1,6 @@
 import Container from '@/src/components/ui/Container'
 import PostCard from '@/src/components/ui/post'
+import { IPost } from '@/src/types/post.type'
 
 const page = async () => {
   const fetchOptions = {
@@ -10,11 +11,15 @@ const page = async () => {
 
   const res = await fetch('http://localhost:5000/api/post', fetchOptions)
 
-  const data = await res.json()
+  const { data: postData } = await res.json()
 
   return (
     <Container>
-      <PostCard />
+      <div className='flex flex-col gap-4'>
+        {postData?.map((post: IPost) => (
+          <PostCard key={post?._id} post={post} />
+        ))}
+      </div>
     </Container>
   )
 }
