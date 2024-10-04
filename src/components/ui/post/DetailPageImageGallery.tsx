@@ -24,14 +24,13 @@ const DetailPageImageGallery = ({ images }: IProps) => {
       {images.map((image, index) => (
         <Link
           key={index}
-          className={`relative w-full ${
-            index === 0 ? 'col-span-2 row-span-2' : ''
-          } ${index === 0 ? 'h-96 md:h-full' : 'h-48 md:h-56'}`}
+          className={`relative w-full ${index === 0 ? 'col-span-2 row-span-2' : ''} 
+                      ${index === 0 ? 'h-96 md:h-96' : 'h-48 md:h-56'}`}
           href={image}>
           <Image
             className='rounded-lg object-cover'
             src={image}
-            alt={`blog-image-${index + 1}`}
+            alt={`detail-image-${index + 1}`}
             fill
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           />
