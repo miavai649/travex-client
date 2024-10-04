@@ -1,4 +1,4 @@
-import { TUser } from "."
+import { TUser } from '.'
 
 export type TComment = {
   _id: string
@@ -8,5 +8,4 @@ export type TComment = {
   createdAt: string
   updatedAt: string
   __v: number
-}[]
-
+}

@@ -24,7 +24,7 @@ const commentApi = baseApi.injectEndpoints({
           method: 'GET'
         }
       },
-      transformResponse: (response: TResponseRedux<TComment>) => {
+      transformResponse: (response: TResponseRedux<TComment[]>) => {
         return {
           data: response.data
         }
@@ -33,4 +33,4 @@ const commentApi = baseApi.injectEndpoints({
   })
 })
 
-export const { useGetMyCommentQuery} = commentApi
+export const { useGetMyCommentQuery } = commentApi
