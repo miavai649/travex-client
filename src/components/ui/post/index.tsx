@@ -60,7 +60,7 @@ export default function PostCard({ post }: { post: IPost }) {
   }
 
   return (
-    <Card className='max-w-2xl mx-auto'>
+    <Card className='max-w-xl w-full mx-auto'>
       <CardBody className='p-4'>
         {/* author information */}
         <div className='flex items-center mb-4'>
@@ -77,7 +77,7 @@ export default function PostCard({ post }: { post: IPost }) {
           </div>
         </div>
 
-        <Link href={`/posts/${post?._id}`} className='block mb-2'>
+        <Link href={`/post/${post?._id}`} className='block mb-2'>
           <h1 className='text-2xl font-bold hover:text-blue-600 transition duration-300'>
             {post?.title}
           </h1>

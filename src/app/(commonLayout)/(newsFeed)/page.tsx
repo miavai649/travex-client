@@ -15,7 +15,7 @@ const page = async () => {
 
   return (
     <Container>
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 my-6'>
         {postData?.map((post: IPost) => (
           <PostCard key={post?._id} post={post} />
         ))}

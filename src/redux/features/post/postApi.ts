@@ -1,5 +1,6 @@
 import { TResponseRedux, TUser } from '@/src/types'
 import { baseApi } from '../../api/baseApi'
+import { IPost } from '@/src/types/post.type'
 
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,7 +23,20 @@ const postApi = baseApi.injectEndpoints({
           method: 'GET'
         }
       },
-      transformResponse: (response: TResponseRedux<TUser>) => {
+      transformResponse: (response: TResponseRedux<IPost>) => {
+        return {
+          data: response.data
+        }
+      }
+    }),
+    getSinglePost: builder.query({
+      query: (params) => {
+        return {
+          url: `/post/${params}`,
+          method: 'GET'
+        }
+      },
+      transformResponse: (response: TResponseRedux<IPost>) => {
         return {
           data: response.data
         }
@@ -31,4 +45,4 @@ const postApi = baseApi.injectEndpoints({
   })
 })
 
-export const { useGetAllPostQuery } = postApi
+export const { useGetAllPostQuery, useGetSinglePostQuery } = postApi
