@@ -18,13 +18,12 @@ import { Button } from '@nextui-org/button'
 import { Input } from '@nextui-org/input'
 import ImageGallery from './ImageGallery'
 import { IPost } from '@/src/types/post.type'
+import { useGetMyCommentQuery } from '@/src/redux/features/comment/commentApi'
 
 export default function PostCard({ post }: { post: IPost }) {
   const [postData, setPostData] = useState(post)
   const [isLiked, setIsLiked] = useState(false)
   const [isDisliked, setIsDisliked] = useState(false)
-  // const [showComments, setShowComments] = useState(false)
-  const [newComment, setNewComment] = useState('')
 
   const handleUpvote = () => {
     if (!isLiked) {
@@ -58,6 +57,9 @@ export default function PostCard({ post }: { post: IPost }) {
     console.log('Sharing post:', post._id)
     // Implement actual share functionality here
   }
+
+  // getting comment data length
+  const {data: commentData} = useGetMyCommentQuery(post?._id)
 
   return (
     <Card className='max-w-xl w-full mx-auto'>
@@ -124,14 +126,15 @@ export default function PostCard({ post }: { post: IPost }) {
             <ThumbsDown className='w-5 h-5' />
             <span>{post?.downvote}</span>
           </Button>
+          <Link href={`/post/${post?._id}`}>
           <Button
             size='sm'
             variant='light'
-            // onClick={() => setShowComments(!showComments)}
             className='text-default-500 hover:text-blue-600'>
             <MessageCircle className='w-5 h-5' />
-            <span>{/* {post?.comments.length} */}0</span>
+            <span>{commentData?.data?.length}</span>
           </Button>
+              </Link>
         </div>
         <Button
           size='sm'
@@ -142,34 +145,6 @@ export default function PostCard({ post }: { post: IPost }) {
           <span>Share</span>
         </Button>
       </CardFooter>
-      {/* {showComments && (
-        <CardBody className='px-4 py-3 bg-default-100 dark:bg-default-50'>
-          <h3 className='font-semibold mb-2'>Comments</h3>
-          <div className='space-y-2 mb-4'>
-            {post?.comments.map((comment) => (
-              <Card key={comment.id} className='p-2'>
-                <p className='font-semibold text-sm'>{comment.author}</p>
-                <p className='text-sm'>{comment.content}</p>
-                <p className='text-xs text-default-500'>
-                  {format(new Date(comment.createdAt), 'MMM dd, yyyy HH:mm')}
-                </p>
-              </Card>
-            ))}
-          </div>
-          <form onSubmit={handleCommentSubmit} className='flex items-center'>
-            <Input
-              type='text'
-              value={newComment}
-              // onChange={(e) => setNewComment(e.target.value)}
-              placeholder='Add a comment...'
-              className='flex-grow mr-2'
-            />
-            <Button type='submit' color='primary' isIconOnly>
-              <Send className='w-5 h-5' />
-            </Button>
-          </form>
-        </CardBody>
-      )} */}
     </Card>
   )
 }
