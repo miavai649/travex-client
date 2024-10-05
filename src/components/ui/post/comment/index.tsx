@@ -6,6 +6,9 @@ import { format } from 'date-fns'
 import { Send } from 'lucide-react'
 import { useState } from 'react'
 import CommentCard from './CommentCard'
+import TForm from '@/src/components/form/TForm'
+import TTextarea from '@/src/components/form/TTextArea'
+import { FieldValues, SubmitHandler } from 'react-hook-form'
 
 // Dummy data for comments (unchanged)
 const dummyComments = [
@@ -37,41 +40,32 @@ interface IProps {
 }
 
 const Comment = ({ commentData }: IProps) => {
-  const [comments, setComments] = useState(dummyComments)
-  const [newComment, setNewComment] = useState('')
-
-  const handleCommentSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (newComment.trim()) {
-      const comment = {
-        id: String(comments.length + 1),
-        author: 'Current User',
-        content: newComment,
-        createdAt: new Date().toISOString(),
-        profileImage: 'https://i.pravatar.cc/150?img=5'
-      }
-      setComments((prev) => [comment, ...prev])
-      setNewComment('')
-    }
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data)
   }
 
   return (
     <section className='bg-background shadow-lg rounded-lg overflow-hidden'>
       <div className='p-6 sm:p-8'>
         <h2 className='text-2xl font-bold mb-6'>Comments</h2>
-        <form onSubmit={handleCommentSubmit} className='flex items-center mb-8'>
-          <Input
+        <TForm onSubmit={onSubmit}>
+          <div className='flex items-center gap-5 mb-8'>
+            {/* <Input
             type='text'
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder='Add a comment...'
             className='flex-grow mr-4'
-          />
-          <Button type='submit' color='primary'>
-            <Send className='w-5 h-5 mr-2' />
-            Post
-          </Button>
-        </form>
+          /> */}
+            <TTextarea name='comment' label='Add a Comment' />
+            <Button
+              type='submit'
+              color='primary'
+              startContent={<Send className='size-6 ' />}>
+              Post
+            </Button>
+          </div>
+        </TForm>
         <div className='space-y-6'>
           {commentData?.map((comment) => <CommentCard comment={comment} />)}
         </div>

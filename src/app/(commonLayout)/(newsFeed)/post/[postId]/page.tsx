@@ -21,6 +21,7 @@ import DetailPageImageGallery from '@/src/components/ui/post/DetailPageImageGall
 import PostDetailsCard from '@/src/components/ui/post/PostDetailsCard'
 import { useGetMyCommentQuery } from '@/src/redux/features/comment/commentApi'
 import Comment from '@/src/components/ui/post/comment'
+import { Spinner } from '@nextui-org/spinner'
 
 interface IProps {
   params: {
@@ -30,18 +31,34 @@ interface IProps {
 
 export default function PostDetails({ params }: IProps) {
   // getting single post data
-  const { data: postData, isLoading } = useGetSinglePostQuery(params.postId)
+  const { data: postData, isLoading: postLoading } = useGetSinglePostQuery(
+    params.postId
+  )
 
   // getting comments for that individual post
-  const { data: commentData } = useGetMyCommentQuery(postData?.data?._id)
+  const { data: commentData, isLoading: commentLoading } = useGetMyCommentQuery(
+    postData?.data?._id,
+    {
+      skip: postLoading
+    }
+  )
 
   return (
     <div className='max-w-4xl mx-auto px-4 py-8'>
-      {isLoading ? <Loading /> : <PostDetailsCard postData={postData?.data!} />}
+      {postLoading ? (
+        <Loading />
+      ) : (
+        <PostDetailsCard postData={postData?.data!} />
+      )}
 
       <Divider className='my-8' />
-
-      <Comment commentData={commentData?.data!} />
+      {postLoading || commentLoading ? (
+        <div className='h-full w-full flex justify-center items-center'>
+          <Spinner size='lg' />
+        </div>
+      ) : (
+        <Comment commentData={commentData?.data!} />
+      )}
     </div>
   )
 }
