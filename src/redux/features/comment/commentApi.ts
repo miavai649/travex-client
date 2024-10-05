@@ -13,7 +13,7 @@ const commentApi = baseApi.injectEndpoints({
           body: payload
         }
       },
-      invalidatesTags: ['comment']
+      invalidatesTags: ['comment', 'posts']
     }),
     getMyComment: builder.query({
       query: (params) => {

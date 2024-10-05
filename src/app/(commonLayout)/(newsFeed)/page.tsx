@@ -5,7 +5,7 @@ import { IPost } from '@/src/types/post.type'
 const page = async () => {
   const fetchOptions = {
     next: {
-      tags: ['posts']
+      revalidate: 0
     }
   }
 

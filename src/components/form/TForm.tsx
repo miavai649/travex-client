@@ -1,6 +1,11 @@
 'use client'
 import { ReactNode } from 'react'
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import {
+  FieldValues,
+  FormProvider,
+  SubmitHandler,
+  useForm
+} from 'react-hook-form'
 
 interface IFormConfig {
   defaultValues?: Record<string, any>
@@ -27,9 +32,14 @@ const TForm = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
 
   const submitHandler = methods.handleSubmit
 
+  const submit: SubmitHandler<FieldValues> = (data) => {
+    onSubmit(data)
+    methods.reset()
+  }
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={submitHandler(onSubmit)}>{children}</form>
+      <form onSubmit={submitHandler(submit)}>{children}</form>
     </FormProvider>
   )
 }

@@ -27,7 +27,8 @@ const postApi = baseApi.injectEndpoints({
         return {
           data: response.data
         }
-      }
+      },
+      providesTags: ['posts']
     }),
     getSinglePost: builder.query({
       query: (params) => {
@@ -40,7 +41,8 @@ const postApi = baseApi.injectEndpoints({
         return {
           data: response.data
         }
-      }
+      },
+      providesTags: ['posts']
     })
   })
 })

@@ -58,9 +58,6 @@ export default function PostCard({ post }: { post: IPost }) {
     // Implement actual share functionality here
   }
 
-  // getting comment data length
-  const {data: commentData} = useGetMyCommentQuery(post?._id)
-
   return (
     <Card className='max-w-xl w-full mx-auto'>
       <CardBody className='p-4'>
@@ -127,14 +124,14 @@ export default function PostCard({ post }: { post: IPost }) {
             <span>{post?.downvote}</span>
           </Button>
           <Link href={`/post/${post?._id}`}>
-          <Button
-            size='sm'
-            variant='light'
-            className='text-default-500 hover:text-blue-600'>
-            <MessageCircle className='w-5 h-5' />
-            <span>{commentData?.data?.length}</span>
-          </Button>
-              </Link>
+            <Button
+              size='sm'
+              variant='light'
+              className='text-default-500 hover:text-blue-600'>
+              <MessageCircle className='w-5 h-5' />
+              <span>{post?.commentCount}</span>
+            </Button>
+          </Link>
         </div>
         <Button
           size='sm'

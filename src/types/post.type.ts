@@ -15,4 +15,5 @@ export interface IPost {
   updatedAt: string
   __v: number
   location: string
+  commentCount: number
 }

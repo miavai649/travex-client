@@ -7,6 +7,7 @@ import { siteConfig } from '../config/site'
 import { fontSans } from '../config/fonts'
 import { Providers } from './providers'
 import ReduxProviders from '../lib/ReduxProviders'
+import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: {
@@ -42,6 +43,7 @@ export default function RootLayout({
           )}>
           <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
             {children}
+            <Toaster richColors expand={false} position='top-center' />
           </Providers>
         </body>
       </html>
