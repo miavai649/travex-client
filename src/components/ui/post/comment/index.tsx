@@ -1,42 +1,19 @@
 import { TComment } from '@/src/types/comment.type'
 import { Avatar } from '@nextui-org/avatar'
 import { Button } from '@nextui-org/button'
-import { Input } from '@nextui-org/input'
+import { Input, Textarea } from '@nextui-org/input'
 import { format } from 'date-fns'
-import { Send } from 'lucide-react'
+import { MessageCircle, Send } from 'lucide-react'
 import { useState } from 'react'
 import CommentCard from './CommentCard'
 import TForm from '@/src/components/form/TForm'
 import TTextarea from '@/src/components/form/TTextArea'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
-
-// Dummy data for comments (unchanged)
-const dummyComments = [
-  {
-    id: '1',
-    author: 'John Doe',
-    content: 'Great post! I loved my trip to Bali.',
-    createdAt: '2024-03-16T08:30:00Z',
-    profileImage: 'https://i.pravatar.cc/150?img=2'
-  },
-  {
-    id: '2',
-    author: 'Alice Smith',
-    content: 'Thanks for sharing these hidden gems!',
-    createdAt: '2024-03-16T09:15:00Z',
-    profileImage: 'https://i.pravatar.cc/150?img=3'
-  },
-  {
-    id: '3',
-    author: 'Bob Johnson',
-    content: "I can't wait to visit Bali after reading this!",
-    createdAt: '2024-03-16T10:00:00Z',
-    profileImage: 'https://i.pravatar.cc/150?img=4'
-  }
-]
+import { Card, CardBody, CardHeader } from '@nextui-org/card'
+import { Divider } from '@nextui-org/divider'
 
 interface IProps {
-  commentData: TComment[] | []
+  commentData: TComment[]
 }
 
 const Comment = ({ commentData }: IProps) => {
@@ -45,32 +22,39 @@ const Comment = ({ commentData }: IProps) => {
   }
 
   return (
-    <section className='bg-background shadow-lg rounded-lg overflow-hidden'>
-      <div className='p-6 sm:p-8'>
-        <h2 className='text-2xl font-bold mb-6'>Comments</h2>
-        <TForm onSubmit={onSubmit}>
-          <div className='flex items-center gap-5 mb-8'>
-            {/* <Input
-            type='text'
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder='Add a comment...'
-            className='flex-grow mr-4'
-          /> */}
-            <TTextarea name='comment' label='Add a Comment' />
-            <Button
-              type='submit'
-              color='primary'
-              startContent={<Send className='size-6 ' />}>
-              Post
-            </Button>
-          </div>
-        </TForm>
-        <div className='space-y-6'>
-          {commentData?.map((comment) => <CommentCard comment={comment} />)}
+    <Card className='w-full bg-background shadow-md'>
+      <CardHeader className='flex flex-col items-start px-6 pt-6 pb-4'>
+        <div className='flex items-center w-full mb-4'>
+          <MessageCircle className='w-6 h-6 text-primary mr-2' />
+          <h2 className='text-2xl font-bold'>
+            Comments ({commentData.length})
+          </h2>
         </div>
-      </div>
-    </section>
+        <div className='w-full'>
+          <TForm onSubmit={onSubmit}>
+            <TTextarea label='Share your thoughts...' name='comment' />
+            <div className='flex justify-end mt-4'>
+              <Button
+                type='submit'
+                color='primary'
+                className='px-6'
+                startContent={<Send className='w-4 h-4' />}>
+                Post Comment
+              </Button>
+            </div>
+          </TForm>
+        </div>
+      </CardHeader>
+      <Divider />
+      <CardBody className='px-6 py-4 overflow-y-auto max-h-[500px]'>
+        {commentData.map((comment, index) => (
+          <div key={comment._id} className='w-full mb-6 last:mb-0'>
+            <CommentCard comment={comment} />
+            {index < commentData.length - 1 && <Divider className='my-6' />}
+          </div>
+        ))}
+      </CardBody>
+    </Card>
   )
 }
 

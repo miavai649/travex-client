@@ -1,11 +1,14 @@
 'use client'
+
+import { useState } from 'react'
+import { format } from 'date-fns'
+import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card'
 import { Avatar } from '@nextui-org/avatar'
 import { Button } from '@nextui-org/button'
+import { Divider } from '@nextui-org/divider'
 import { Bookmark, MapPin, Share2, ThumbsDown, ThumbsUp } from 'lucide-react'
 import DetailPageImageGallery from './DetailPageImageGallery'
-import { useState } from 'react'
 import { IPost } from '@/src/types/post.type'
-import { format } from 'date-fns'
 
 const dummyPost = {
   _id: '66fe9881e9a1bf14747b1d66',
@@ -58,7 +61,6 @@ interface IProps {
 
 const PostDetailsCard = ({ postData }: IProps) => {
   const [post, setPost] = useState(dummyPost)
-
   const [isLiked, setIsLiked] = useState(false)
   const [isDisliked, setIsDisliked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
@@ -92,7 +94,6 @@ const PostDetailsCard = ({ postData }: IProps) => {
   }
 
   const handleShare = () => {
-    // console.log('Sharing post:', post._id)
     // Implement actual share functionality here
   }
 
@@ -102,63 +103,62 @@ const PostDetailsCard = ({ postData }: IProps) => {
   }
 
   return (
-    <article className='bg-background shadow-lg rounded-lg overflow-hidden'>
-      <div className='p-6 sm:p-8'>
-        <header className='mb-8'>
-          <div className='flex items-center justify-between mb-4'>
-            <div className='flex items-center'>
-              <Avatar
-                src={postData?.author.profileImage}
-                alt={postData?.author.name}
-                className='mr-4'
-              />
-              <div>
-                <p className='font-semibold text-lg'>{postData?.author.name}</p>
-                <p className='text-sm text-default-500'>
-                  {format(new Date(postData?.createdAt!), 'MMM dd, yyyy')}
-                </p>
-              </div>
+    <Card className='w-full'>
+      <CardHeader className='flex flex-col items-start px-6 pt-6 pb-0'>
+        <div className='flex justify-between w-full mb-4'>
+          <div className='flex items-center'>
+            <Avatar
+              src={postData?.author.profileImage}
+              alt={postData?.author.name}
+              className='mr-4'
+            />
+            <div>
+              <p className='font-semibold text-lg'>{postData?.author.name}</p>
+              <p className='text-sm text-default-500'>
+                {format(new Date(postData?.createdAt!), 'MMM dd, yyyy')}
+              </p>
             </div>
-            <Button
-              size='sm'
-              variant='light'
-              onClick={handleBookmark}
-              className={isBookmarked ? 'text-primary' : 'text-default-500'}>
-              <Bookmark className='w-5 h-5' />
-            </Button>
           </div>
-          <h1 className='text-4xl font-bold mb-4'>{postData?.title}</h1>
-          <p className='text-xl text-default-700 dark:text-default-400 mb-4'>
-            {postData?.content}
-          </p>
-          <div className='flex items-center mb-4'>
-            <MapPin className='w-5 h-5 text-default-500 mr-2' />
-            <span className='text-default-600'>{postData?.location}</span>
-          </div>
-          <div className='flex flex-wrap gap-2'>
-            <span className='bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full'>
-              {postData?.category}
+          <Button
+            size='sm'
+            variant='light'
+            onClick={handleBookmark}
+            className={isBookmarked ? 'text-primary' : 'text-default-500'}>
+            <Bookmark className='w-5 h-5' />
+          </Button>
+        </div>
+        <h1 className='text-3xl font-bold mb-2'>{postData?.title}</h1>
+        <p className='text-xl text-default-700 dark:text-default-400 mb-4'>
+          {postData?.content}
+        </p>
+        <div className='flex items-center mb-2'>
+          <MapPin className='w-5 h-5 text-default-500 mr-2' />
+          <span className='text-default-600'>{postData?.location}</span>
+        </div>
+        <div className='flex flex-wrap gap-2 mb-4'>
+          <span className='bg-primary/10 text-primary text-sm font-medium px-3 py-1 rounded-full'>
+            {postData?.category}
+          </span>
+          {postData?.isPremium && (
+            <span className='bg-warning/10 text-warning text-sm font-medium px-3 py-1 rounded-full'>
+              Premium
             </span>
-            {postData?.isPremium && (
-              <span className='bg-warning/10 text-warning text-sm font-medium px-3 py-1 rounded-full'>
-                Premium
-              </span>
-            )}
-          </div>
-        </header>
-
+          )}
+        </div>
+      </CardHeader>
+      <Divider />
+      <CardBody className='px-6 py-4'>
         {postData?.images && (
           <DetailPageImageGallery images={postData?.images} />
         )}
-
         <div
-          className='mt-8 prose dark:prose-invert max-w-none'
+          className='mt-6 prose dark:prose-invert max-w-none'
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
-      </div>
-
-      <footer className='bg-default-100 dark:bg-default-50 px-6 py-4 sm:px-8 sm:py-6'>
-        <div className='flex justify-between items-center'>
+      </CardBody>
+      <Divider />
+      <CardFooter className='px-6 py-4'>
+        <div className='flex justify-between items-center w-full'>
           <div className='flex space-x-4'>
             <Button
               size='sm'
@@ -182,8 +182,8 @@ const PostDetailsCard = ({ postData }: IProps) => {
             <span>Share</span>
           </Button>
         </div>
-      </footer>
-    </article>
+      </CardFooter>
+    </Card>
   )
 }
 

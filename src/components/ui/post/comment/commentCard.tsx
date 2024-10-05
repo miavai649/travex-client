@@ -7,19 +7,22 @@ interface IProps {
 }
 const CommentCard = ({ comment }: IProps) => {
   return (
-    <div key={comment?._id} className='flex items-start'>
+    <div className='flex items-start'>
       <Avatar
-        src={comment?.commenter?.profileImage}
-        alt={comment?.commenter?.name}
+        src={comment.commenter.profileImage}
+        alt={comment.commenter.name}
         className='mr-4'
+        size='md'
       />
-      <div>
-        <p className='font-semibold'>{comment?.commenter?.name}</p>
-        <p className='text-sm text-default-500 mb-2'>
-          {format(new Date(comment?.createdAt), 'MMM dd, yyyy HH:mm')}
-        </p>
-        <p className='text-default-700 dark:text-default-400'>
-          {comment?.comment}
+      <div className='flex-grow'>
+        <div className='flex justify-between items-center mb-2'>
+          <p className='font-semibold text-lg'>{comment.commenter.name}</p>
+          <p className='text-sm text-default-500'>
+            {format(new Date(comment.createdAt), 'MMM dd, yyyy HH:mm')}
+          </p>
+        </div>
+        <p className='text-default-700 dark:text-default-300 text-base leading-relaxed'>
+          {comment.comment}
         </p>
       </div>
     </div>

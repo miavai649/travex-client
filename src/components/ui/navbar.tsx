@@ -93,6 +93,19 @@ export const Navbar = () => {
 
       <NavbarContent className='sm:hidden basis-1 pl-4' justify='end'>
         <ThemeSwitch />
+        {user?.email ? (
+          <NavbarItem className='sm:hidden gap-2'>
+            <NavbarDropdown />
+          </NavbarItem>
+        ) : (
+          <NavbarItem className='sm:hidden  gap-2'>
+            <Button
+              onClick={() => router.push('/login')}
+              className=' bg-blue-600 text-white font-semibold transition duration-300 transform hover:scale-105'>
+              Login
+            </Button>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       <NavbarMenu>
