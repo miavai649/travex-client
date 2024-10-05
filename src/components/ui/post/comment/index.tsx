@@ -1,24 +1,51 @@
+'use client'
 import { TComment } from '@/src/types/comment.type'
-import { Avatar } from '@nextui-org/avatar'
 import { Button } from '@nextui-org/button'
-import { Input, Textarea } from '@nextui-org/input'
-import { format } from 'date-fns'
 import { MessageCircle, Send } from 'lucide-react'
-import { useState } from 'react'
 import CommentCard from './CommentCard'
 import TForm from '@/src/components/form/TForm'
 import TTextarea from '@/src/components/form/TTextArea'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
 import { Card, CardBody, CardHeader } from '@nextui-org/card'
 import { Divider } from '@nextui-org/divider'
+import { useParams } from 'next/navigation'
+import { useAddCommentMutation } from '@/src/redux/features/comment/commentApi'
+import { TResponse } from '@/src/types'
+import { toast } from 'sonner'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { commentValidationSchema } from '@/src/schemas/comment.schema'
 
 interface IProps {
   commentData: TComment[]
 }
 
 const Comment = ({ commentData }: IProps) => {
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data)
+  const { postId } = useParams()
+
+  const [addComment, { isLoading }] = useAddCommentMutation()
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const comment = {
+      post: postId,
+      ...data
+    }
+
+    try {
+      const res = (await addComment(comment)) as TResponse<TComment>
+      console.log('🚀 ~ constonSubmit:SubmitHandler<FieldValues>= ~ res:', res)
+
+      if (res.error) {
+        toast.error(res.error.data.message, {
+          duration: 2000
+        })
+      } else {
+        toast.success('Comment posted successfully', {
+          duration: 2000
+        })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { duration: 2000 })
+    }
   }
 
   return (
@@ -31,15 +58,18 @@ const Comment = ({ commentData }: IProps) => {
           </h2>
         </div>
         <div className='w-full'>
-          <TForm onSubmit={onSubmit}>
+          <TForm
+            onSubmit={onSubmit}
+            resolver={zodResolver(commentValidationSchema)}>
             <TTextarea label='Share your thoughts...' name='comment' />
             <div className='flex justify-end mt-4'>
               <Button
+                isLoading={isLoading}
                 type='submit'
                 color='primary'
                 className='px-6'
                 startContent={<Send className='w-4 h-4' />}>
-                Post Comment
+                Send
               </Button>
             </div>
           </TForm>

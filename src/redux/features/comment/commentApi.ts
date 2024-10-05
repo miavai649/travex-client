@@ -5,18 +5,16 @@ import { TComment } from '@/src/types/comment.type'
 
 const commentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // resetPassword: builder.mutation({
-    //   query: (userInfo) => {
-    //     return {
-    //       url: '/auth/reset-password',
-    //       method: 'POST',
-    //       body: { email: userInfo?.email, newPassword: userInfo?.newPassword },
-    //       headers: {
-    //         Authorization: userInfo?.token
-    //       }
-    //     }
-    //   }
-    // }),
+    addComment: builder.mutation({
+      query: (payload) => {
+        return {
+          url: '/comment/create-comment',
+          method: 'POST',
+          body: payload
+        }
+      },
+      invalidatesTags: ['comment']
+    }),
     getMyComment: builder.query({
       query: (params) => {
         return {
@@ -28,9 +26,10 @@ const commentApi = baseApi.injectEndpoints({
         return {
           data: response.data
         }
-      }
+      },
+      providesTags: ['comment']
     })
   })
 })
 
-export const { useGetMyCommentQuery } = commentApi
+export const { useGetMyCommentQuery, useAddCommentMutation } = commentApi

@@ -1,3 +1,4 @@
+'use client'
 import { TComment } from '@/src/types/comment.type'
 import { Avatar } from '@nextui-org/avatar'
 import { format } from 'date-fns'

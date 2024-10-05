@@ -21,11 +21,22 @@ import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
 import NavbarDropdown from './NavbarDropDown'
 import { Button } from '@nextui-org/button'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 export const Navbar = () => {
   const user = useAppSelector(useCurrentUser)
 
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
   const router = useRouter()
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
     <NextUINavbar maxWidth='xl' position='sticky' isBordered>

@@ -5,8 +5,8 @@ import clsx from 'clsx'
 
 import { siteConfig } from '../config/site'
 import { fontSans } from '../config/fonts'
-import { Navbar } from '../components/ui/navbar'
-import { Providers } from '../lib/providers'
+import { Providers } from './providers'
+import ReduxProviders from '../lib/ReduxProviders'
 
 export const metadata: Metadata = {
   title: {
@@ -32,17 +32,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html suppressHydrationWarning lang='en'>
-      <head />
-      <body
-        className={clsx(
-          'min-h-screen bg-background font-sans antialiased',
-          fontSans.variable
-        )}>
-        <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
-          {children}
-        </Providers>
-      </body>
-    </html>
+    <ReduxProviders>
+      <html suppressHydrationWarning lang='en'>
+        <head />
+        <body
+          className={clsx(
+            'min-h-screen bg-background font-sans antialiased',
+            fontSans.variable
+          )}>
+          <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
+            {children}
+          </Providers>
+        </body>
+      </html>
+    </ReduxProviders>
   )
 }

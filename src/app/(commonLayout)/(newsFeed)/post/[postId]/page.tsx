@@ -1,23 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { format } from 'date-fns'
-import { Card, CardBody, CardFooter } from '@nextui-org/card'
-import { Avatar } from '@nextui-org/avatar'
-import { Button } from '@nextui-org/button'
-import { Input } from '@nextui-org/input'
 import { Divider } from '@nextui-org/divider'
-import {
-  ThumbsUp,
-  ThumbsDown,
-  Share2,
-  MapPin,
-  Send,
-  Bookmark
-} from 'lucide-react'
+
 import { useGetSinglePostQuery } from '@/src/redux/features/post/postApi'
 import Loading from '@/src/components/ui/Loading'
-import DetailPageImageGallery from '@/src/components/ui/post/DetailPageImageGallery'
 import PostDetailsCard from '@/src/components/ui/post/PostDetailsCard'
 import { useGetMyCommentQuery } from '@/src/redux/features/comment/commentApi'
 import Comment from '@/src/components/ui/post/comment'

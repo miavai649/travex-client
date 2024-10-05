@@ -11,6 +11,7 @@ export interface IUser {
   role: string
   birthDate: string
   status: string
+  profileImage: string
   iat: number
   exp: number
 }
