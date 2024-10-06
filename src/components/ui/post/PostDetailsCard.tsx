@@ -9,6 +9,7 @@ import { Divider } from '@nextui-org/divider'
 import { Bookmark, MapPin, Share2, ThumbsDown, ThumbsUp } from 'lucide-react'
 import DetailPageImageGallery from './DetailPageImageGallery'
 import { IPost } from '@/src/types/post.type'
+import { useHandleVotingMutation } from '@/src/redux/features/post/postApi'
 
 const dummyPost = {
   _id: '66fe9881e9a1bf14747b1d66',
@@ -65,32 +66,28 @@ const PostDetailsCard = ({ postData }: IProps) => {
   const [isDisliked, setIsDisliked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
 
-  const handleUpvote = () => {
-    if (!isLiked) {
-      setPost((prev) => ({ ...prev, upvote: prev.upvote + 1 }))
-      setIsLiked(true)
-      if (isDisliked) {
-        setPost((prev) => ({ ...prev, downvote: prev.downvote - 1 }))
-        setIsDisliked(false)
+  // handle voting for post
+  const [handleVote] = useHandleVotingMutation()
+
+  const handleUpvote = async (id: string) => {
+    const upvoteData = {
+      id,
+      data: {
+        action: 'upvote'
       }
-    } else {
-      setPost((prev) => ({ ...prev, upvote: prev.upvote - 1 }))
-      setIsLiked(false)
     }
+
+    await handleVote(upvoteData)
   }
 
-  const handleDownvote = () => {
-    if (!isDisliked) {
-      setPost((prev) => ({ ...prev, downvote: prev.downvote + 1 }))
-      setIsDisliked(true)
-      if (isLiked) {
-        setPost((prev) => ({ ...prev, upvote: prev.upvote - 1 }))
-        setIsLiked(false)
+  const handleDownvote = async (id: string) => {
+    const downvoteData = {
+      id,
+      data: {
+        action: 'downvote'
       }
-    } else {
-      setPost((prev) => ({ ...prev, downvote: prev.downvote - 1 }))
-      setIsDisliked(false)
     }
+    await handleVote(downvoteData)
   }
 
   const handleShare = () => {
@@ -164,7 +161,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
               size='sm'
               color={isLiked ? 'primary' : 'default'}
               variant='flat'
-              onClick={handleUpvote}>
+              onClick={() => handleUpvote(post?._id)}>
               <ThumbsUp className='w-5 h-5 mr-2' />
               <span>{post.upvote}</span>
             </Button>
@@ -172,7 +169,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
               size='sm'
               color={isDisliked ? 'danger' : 'default'}
               variant='flat'
-              onClick={handleDownvote}>
+              onClick={() => handleDownvote(post?._id)}>
               <ThumbsDown className='w-5 h-5 mr-2' />
               <span>{post.downvote}</span>
             </Button>

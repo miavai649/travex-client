@@ -4,18 +4,16 @@ import { IPost } from '@/src/types/post.type'
 
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // resetPassword: builder.mutation({
-    //   query: (userInfo) => {
-    //     return {
-    //       url: '/auth/reset-password',
-    //       method: 'POST',
-    //       body: { email: userInfo?.email, newPassword: userInfo?.newPassword },
-    //       headers: {
-    //         Authorization: userInfo?.token
-    //       }
-    //     }
-    //   }
-    // }),
+    handleVoting: builder.mutation({
+      query: (payload) => {
+        return {
+          url: `/post/voting/${payload?.id}`,
+          method: 'PUT',
+          body: payload.data
+        }
+      },
+      invalidatesTags: ['posts']
+    }),
     getAllPost: builder.query({
       query: () => {
         return {
@@ -47,4 +45,8 @@ const postApi = baseApi.injectEndpoints({
   })
 })
 
-export const { useGetAllPostQuery, useGetSinglePostQuery } = postApi
+export const {
+  useGetAllPostQuery,
+  useGetSinglePostQuery,
+  useHandleVotingMutation
+} = postApi
