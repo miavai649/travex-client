@@ -32,7 +32,6 @@ const Comment = ({ commentData }: IProps) => {
 
     try {
       const res = (await addComment(comment)) as TResponse<TComment>
-      console.log('🚀 ~ constonSubmit:SubmitHandler<FieldValues>= ~ res:', res)
 
       if (res.error) {
         toast.error(res.error.data.message, {
