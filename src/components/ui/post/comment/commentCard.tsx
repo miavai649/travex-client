@@ -55,17 +55,17 @@ const CommentCard = ({ comment }: IProps) => {
   return (
     <div className='flex items-start'>
       <Avatar
-        src={comment.commenter.profileImage}
-        alt={comment.commenter.name}
+        src={comment?.commenter?.profileImage}
+        alt={comment?.commenter?.name}
         className='mr-4'
         size='md'
       />
       <div className='flex-grow'>
         <div className='flex justify-between items-center mb-2'>
-          <p className='font-semibold text-lg'>{comment.commenter.name}</p>
+          <p className='font-semibold text-lg'>{comment?.commenter?.name}</p>
           <div className='flex items-center'>
             <p className='text-sm text-default-500 mr-2'>
-              {format(new Date(comment.createdAt), 'MMM dd, yyyy HH:mm')}
+              {format(new Date(comment?.createdAt), 'MMM dd, yyyy HH:mm')}
             </p>
             {user?._id.toString() === comment?.commenter?._id?.toString() && (
               <>
@@ -87,7 +87,7 @@ const CommentCard = ({ comment }: IProps) => {
                       className='text-danger'
                       color='danger'
                       startContent={<Trash2 className='w-4 h-4' />}
-                      onPress={() => handleDeleteComment(comment._id)}>
+                      onPress={() => handleDeleteComment(comment?._id)}>
                       Delete
                     </DropdownItem>
                   </DropdownMenu>
@@ -96,14 +96,15 @@ const CommentCard = ({ comment }: IProps) => {
                 <EditCommentModal
                   isOpen={isOpen}
                   onClose={onClose}
-                  commentId={comment._id}
+                  commentId={comment?._id}
+                  comment={comment?.comment}
                 />
               </>
             )}
           </div>
         </div>
         <p className='text-default-700 dark:text-default-300 text-base leading-relaxed'>
-          {comment.comment}
+          {comment?.comment}
         </p>
       </div>
     </div>
