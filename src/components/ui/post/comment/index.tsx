@@ -14,6 +14,7 @@ import { TResponse } from '@/src/types'
 import { toast } from 'sonner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { commentValidationSchema } from '@/src/schemas/comment.schema'
+import { Spinner } from '@nextui-org/spinner'
 
 interface IProps {
   commentData: TComment[]
@@ -64,6 +65,7 @@ const Comment = ({ commentData }: IProps) => {
             <div className='flex justify-end mt-4'>
               <Button
                 isLoading={isLoading}
+                spinner={<Spinner size='sm' color='default' />}
                 type='submit'
                 color='primary'
                 className='px-6'

@@ -16,6 +16,8 @@ import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
 import { useDeleteCommentMutation } from '@/src/redux/features/comment/commentApi'
 import { TResponse } from '@/src/types'
 import { toast } from 'sonner'
+import EditCommentModal from '@/src/components/modal/EditCommentModal'
+import { useDisclosure } from '@nextui-org/modal'
 
 interface IProps {
   comment: TComment
@@ -23,14 +25,10 @@ interface IProps {
 
 const CommentCard = ({ comment }: IProps) => {
   const user = useAppSelector(useCurrentUser)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   // delete comment rtk query
   const [deleteComment] = useDeleteCommentMutation()
-
-  const handleEditComment = (commentId: string) => {
-    // Implement edit logic here
-    console.log('Editing comment:', commentId)
-  }
 
   const handleDeleteComment = async (commentId: string) => {
     const toastId = toast.loading('Deleting comment...')
@@ -70,29 +68,37 @@ const CommentCard = ({ comment }: IProps) => {
               {format(new Date(comment.createdAt), 'MMM dd, yyyy HH:mm')}
             </p>
             {user?._id.toString() === comment?.commenter?._id?.toString() && (
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button isIconOnly size='sm' variant='light'>
-                    <MoreVertical className='w-4 h-4' />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu aria-label='Comment actions'>
-                  <DropdownItem
-                    key='edit'
-                    startContent={<Edit2 className='w-4 h-4' />}
-                    onPress={() => handleEditComment(comment._id)}>
-                    Edit
-                  </DropdownItem>
-                  <DropdownItem
-                    key='delete'
-                    className='text-danger'
-                    color='danger'
-                    startContent={<Trash2 className='w-4 h-4' />}
-                    onPress={() => handleDeleteComment(comment._id)}>
-                    Delete
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+              <>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button isIconOnly size='sm' variant='light'>
+                      <MoreVertical className='w-4 h-4' />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label='Comment actions'>
+                    <DropdownItem
+                      key='edit'
+                      startContent={<Edit2 className='w-4 h-4' />}
+                      onPress={onOpen}>
+                      Edit
+                    </DropdownItem>
+                    <DropdownItem
+                      key='delete'
+                      className='text-danger'
+                      color='danger'
+                      startContent={<Trash2 className='w-4 h-4' />}
+                      onPress={() => handleDeleteComment(comment._id)}>
+                      Delete
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+
+                <EditCommentModal
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  commentId={comment._id}
+                />
+              </>
             )}
           </div>
         </div>
