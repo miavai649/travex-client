@@ -24,6 +24,16 @@ const commentApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['comment', 'posts']
     }),
+    updateComment: builder.mutation({
+      query: (payload) => {
+        return {
+          url: `/comment/${payload?.commentId}`,
+          method: 'PUT',
+          body: payload.data
+        }
+      },
+      invalidatesTags: ['comment', 'posts']
+    }),
     getMyComment: builder.query({
       query: (params) => {
         return {
@@ -44,5 +54,6 @@ const commentApi = baseApi.injectEndpoints({
 export const {
   useGetMyCommentQuery,
   useAddCommentMutation,
-  useDeleteCommentMutation
+  useDeleteCommentMutation,
+  useUpdateCommentMutation
 } = commentApi
