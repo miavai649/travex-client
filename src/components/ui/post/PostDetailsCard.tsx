@@ -10,13 +10,15 @@ import { Bookmark, MapPin, Share2, ThumbsDown, ThumbsUp } from 'lucide-react'
 import DetailPageImageGallery from './DetailPageImageGallery'
 import { IPost } from '@/src/types/post.type'
 import { useHandleVotingMutation } from '@/src/redux/features/post/postApi'
+import { useAppSelector } from '@/src/redux/hook'
+import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
+import { Spinner } from '@nextui-org/spinner'
 
-const dummyPost = {
-  _id: '66fe9881e9a1bf14747b1d66',
-  title: 'Top 5 Budget-Friendly Destinations for 2024',
-  description:
-    'Explore affordable travel destinations for your next vacation without breaking the bank.',
-  content: `
+interface IProps {
+  postData: IPost
+}
+
+const content = `
     <h2>1. Bali, Indonesia</h2>
     <p>Known for its stunning beaches and rich culture, Bali offers a perfect blend of relaxation and adventure.</p>
     <img src="https://res.cloudinary.com/dupg5agtg/image/upload/v1727961214/3yzrft3h5n6-1727961212263-sylhet.jpg" alt="Bali beach" />
@@ -34,38 +36,13 @@ const dummyPost = {
     <h2>5. Krakow, Poland</h2>
     <p>Discover Eastern European charm and history on a budget.</p>
     <img src="https://res.cloudinary.com/dupg5agtg/image/upload/v1727961217/jx4tdu7tlck-1727961214895-sunamganj.jpg" alt="Krakow old town" />
-  `,
-  author: {
-    _id: '66fd139fe7d6392a421d7db8',
-    name: 'Maruf Khan',
-    email: 'khan@gmail.com',
-    profileImage: 'https://i.ibb.co.com/vkVW6s0/download.png'
-  },
-  images: [
-    'https://res.cloudinary.com/dupg5agtg/image/upload/v1727961214/3yzrft3h5n6-1727961212263-sylhet.jpg',
-    'https://res.cloudinary.com/dupg5agtg/image/upload/v1727961216/7dqqb3ub3mr-1727961213861-hobiganj.jpg',
-    'https://res.cloudinary.com/dupg5agtg/image/upload/v1727961217/jx4tdu7tlck-1727961214895-sunamganj.jpg'
-  ],
-  category: 'Budget Travel',
-  upvote: 0,
-  downvote: 0,
-  isPremium: false,
-  isDelete: false,
-  createdAt: '2024-10-03T13:13:37.494Z',
-  updatedAt: '2024-10-03T13:13:37.494Z',
-  location: 'Sunamganj, Sylhet'
-}
-
-interface IProps {
-  postData: IPost
-}
+  `
 
 const PostDetailsCard = ({ postData }: IProps) => {
-  const [post, setPost] = useState(dummyPost)
-  const [isLiked, setIsLiked] = useState(false)
-  const [isDisliked, setIsDisliked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
 
+  // getting current logged in user from redux
+  const user = useAppSelector(useCurrentUser)
   // handle voting for post
   const [handleVote] = useHandleVotingMutation()
 
@@ -150,7 +127,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
         )}
         <div
           className='mt-6 prose dark:prose-invert max-w-none'
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: content }}
         />
       </CardBody>
       <Divider />
@@ -159,19 +136,27 @@ const PostDetailsCard = ({ postData }: IProps) => {
           <div className='flex space-x-4'>
             <Button
               size='sm'
-              color={isLiked ? 'primary' : 'default'}
+              color={
+                !postData?.upvote?.includes(user?._id || '')
+                  ? 'default'
+                  : 'primary'
+              }
               variant='flat'
-              onClick={() => handleUpvote(post?._id)}>
+              onClick={() => handleUpvote(postData?._id)}>
               <ThumbsUp className='w-5 h-5 mr-2' />
-              <span>{post.upvote}</span>
+              <span>{postData?.upvote?.length}</span>
             </Button>
             <Button
               size='sm'
-              color={isDisliked ? 'danger' : 'default'}
+              color={
+                !postData?.downvote?.includes(user?._id || '')
+                  ? 'default'
+                  : 'danger'
+              }
               variant='flat'
-              onClick={() => handleDownvote(post?._id)}>
+              onClick={() => handleDownvote(postData?._id)}>
               <ThumbsDown className='w-5 h-5 mr-2' />
-              <span>{post.downvote}</span>
+              <span>{postData?.downvote?.length}</span>
             </Button>
           </div>
           <Button size='sm' variant='flat' onClick={handleShare}>

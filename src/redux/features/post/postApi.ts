@@ -1,19 +1,9 @@
-import { TResponseRedux, TUser } from '@/src/types'
+import { TResponseRedux } from '@/src/types'
 import { baseApi } from '../../api/baseApi'
 import { IPost } from '@/src/types/post.type'
 
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    handleVoting: builder.mutation({
-      query: (payload) => {
-        return {
-          url: `/post/voting/${payload?.id}`,
-          method: 'PUT',
-          body: payload.data
-        }
-      },
-      invalidatesTags: ['posts']
-    }),
     getAllPost: builder.query({
       query: () => {
         return {
@@ -21,7 +11,7 @@ const postApi = baseApi.injectEndpoints({
           method: 'GET'
         }
       },
-      transformResponse: (response: TResponseRedux<IPost>) => {
+      transformResponse: (response: TResponseRedux<IPost[]>) => {
         return {
           data: response.data
         }
@@ -41,6 +31,16 @@ const postApi = baseApi.injectEndpoints({
         }
       },
       providesTags: ['posts']
+    }),
+    handleVoting: builder.mutation({
+      query: (payload) => {
+        return {
+          url: `/post/voting/${payload?.id}`,
+          method: 'PUT',
+          body: payload.data
+        }
+      },
+      invalidatesTags: ['posts']
     })
   })
 })

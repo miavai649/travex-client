@@ -7,8 +7,8 @@ export interface IPost {
   author: TUser
   images: string[]
   category: string
-  upvote: number
-  downvote: number
+  upvote: string[]
+  downvote: string[]
   isPremium: boolean
   isDelete: boolean
   createdAt: string

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import {
@@ -15,42 +14,38 @@ import {
 import { Card, CardBody, CardFooter } from '@nextui-org/card'
 import { Avatar } from '@nextui-org/avatar'
 import { Button } from '@nextui-org/button'
-import { Input } from '@nextui-org/input'
 import ImageGallery from './ImageGallery'
 import { IPost } from '@/src/types/post.type'
-import { useGetMyCommentQuery } from '@/src/redux/features/comment/commentApi'
+import { useAppSelector } from '@/src/redux/hook'
+import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
+import { useHandleVotingMutation } from '@/src/redux/features/post/postApi'
 
 export default function PostCard({ post }: { post: IPost }) {
-  const [postData, setPostData] = useState(post)
-  const [isLiked, setIsLiked] = useState(false)
-  const [isDisliked, setIsDisliked] = useState(false)
+  // getting current logged in user from redux
+  const user = useAppSelector(useCurrentUser)
 
-  const handleUpvote = () => {
-    if (!isLiked) {
-      setPostData((prev) => ({ ...prev, upvote: prev.upvote + 1 }))
-      setIsLiked(true)
-      if (isDisliked) {
-        setPostData((prev) => ({ ...prev, downvote: prev.downvote - 1 }))
-        setIsDisliked(false)
+  // handle voting for post
+  const [handleVote] = useHandleVotingMutation()
+
+  const handleUpvote = async (id: string) => {
+    const upvoteData = {
+      id,
+      data: {
+        action: 'upvote'
       }
-    } else {
-      setPostData((prev) => ({ ...prev, upvote: prev.upvote - 1 }))
-      setIsLiked(false)
     }
+
+    await handleVote(upvoteData)
   }
 
-  const handleDownvote = () => {
-    if (!isDisliked) {
-      setPostData((prev) => ({ ...prev, downvote: prev.downvote + 1 }))
-      setIsDisliked(true)
-      if (isLiked) {
-        setPostData((prev) => ({ ...prev, upvote: prev.upvote - 1 }))
-        setIsLiked(false)
+  const handleDownvote = async (id: string) => {
+    const downvoteData = {
+      id,
+      data: {
+        action: 'downvote'
       }
-    } else {
-      setPostData((prev) => ({ ...prev, downvote: prev.downvote - 1 }))
-      setIsDisliked(false)
     }
+    await handleVote(downvoteData)
   }
 
   const handleShare = () => {
@@ -109,19 +104,19 @@ export default function PostCard({ post }: { post: IPost }) {
         <div className='flex space-x-4 mb-2 sm:mb-0'>
           <Button
             size='sm'
+            className={`${!post?.upvote?.includes(user?._id || '') ? 'text-default-500' : 'text-blue-600'}`}
             variant='light'
-            onClick={handleUpvote}
-            className={`${isLiked ? 'text-blue-600' : 'text-default-500'}`}>
+            onClick={() => handleUpvote(post?._id)}>
             <ThumbsUp className='w-5 h-5' />
-            <span>{post?.upvote}</span>
+            <span>{post?.upvote?.length}</span>
           </Button>
           <Button
             size='sm'
+            className={`${!post?.downvote?.includes(user?._id || '') ? 'text-default-500' : 'text-red-600'}`}
             variant='light'
-            onClick={handleDownvote}
-            className={`${isDisliked ? 'text-red-600' : 'text-default-500'}`}>
+            onClick={() => handleDownvote(post?._id)}>
             <ThumbsDown className='w-5 h-5' />
-            <span>{post?.downvote}</span>
+            <span>{post?.downvote?.length}</span>
           </Button>
           <Link href={`/post/${post?._id}`}>
             <Button
