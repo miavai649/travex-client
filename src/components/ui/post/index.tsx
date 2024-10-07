@@ -19,10 +19,28 @@ import { IPost } from '@/src/types/post.type'
 import { useAppSelector } from '@/src/redux/hook'
 import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
 import { useHandleVotingMutation } from '@/src/redux/features/post/postApi'
+import { FiUserPlus, FiUserCheck } from 'react-icons/fi'
+import { useToggleFollowUnfollowUserMutation } from '@/src/redux/features/auth/authApi'
+import { Spinner } from '@nextui-org/spinner'
 
 export default function PostCard({ post }: { post: IPost }) {
   // getting current logged in user from redux
   const user = useAppSelector(useCurrentUser)
+
+  const [isFollowing, setIsFollowing] = useState(false)
+
+  const [handleFollow, { isLoading: handleFollowLoading }] =
+    useToggleFollowUnfollowUserMutation()
+
+  const handleFollowToggle = async (id: string) => {
+    if (id) {
+      const followData = {
+        followingId: id
+      }
+
+      await handleFollow(followData)
+    }
+  }
 
   // handle voting for post
   const [handleVote] = useHandleVotingMutation()
@@ -57,18 +75,47 @@ export default function PostCard({ post }: { post: IPost }) {
     <Card className='max-w-xl w-full mx-auto'>
       <CardBody className='p-4'>
         {/* author information */}
-        <div className='flex items-center mb-4'>
-          <Avatar
-            src={post?.author?.profileImage}
-            alt={post?.author?.name}
-            className='mr-3'
-          />
-          <div>
-            <p className='font-semibold text-lg'>{post?.author?.name}</p>
-            <p className='text-sm text-default-500'>
-              {format(new Date(post?.createdAt), 'MMM dd, yyyy')}
-            </p>
+        <div className='flex items-center justify-between mb-4'>
+          <div className='flex items-center'>
+            <Avatar
+              src={post?.author?.profileImage}
+              alt={post?.author?.name}
+              className='mr-3'
+            />
+            <div>
+              <p className='font-semibold text-lg'>{post?.author?.name}</p>
+              <p className='text-sm text-default-500'>
+                {format(new Date(post?.createdAt), 'MMM dd, yyyy')}
+              </p>
+            </div>
           </div>
+
+          {/* follow button */}
+
+          {user?._id !== post?.author?._id && (
+            <Button
+              size='sm'
+              isLoading={handleFollowLoading}
+              spinner={<Spinner size='sm' />}
+              onClick={() => handleFollowToggle(post?.author?._id)}
+              className={`${
+                post?.author?.followers.includes(user?._id)
+                  ? 'bg-success text-white'
+                  : 'bg-primary text-white'
+              } flex items-center gap-2 px-4 py-2 rounded-lg`}>
+              {post?.author?.followers.includes(user?._id) ? (
+                <>
+                  <FiUserCheck className='w-5 h-5' />{' '}
+                  <span className='text-sm'>Unfollow</span>
+                </>
+              ) : (
+                <>
+                  <FiUserPlus className='w-5 h-5' />{' '}
+                  <span className='text-sm'>Follow</span>
+                </>
+              )}
+            </Button>
+          )}
         </div>
 
         <Link href={`/post/${post?._id}`} className='block mb-2'>

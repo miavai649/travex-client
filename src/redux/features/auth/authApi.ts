@@ -69,6 +69,14 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo
       }),
       invalidatesTags: ['user', 'posts']
+    }),
+    toggleFollowUnfollowUser: builder.mutation({
+      query: (userInfo) => ({
+        url: '/user/toggle-follower',
+        method: 'PUT',
+        body: userInfo
+      }),
+      invalidatesTags: ['user', 'posts']
     })
   })
 })
@@ -80,5 +88,6 @@ export const {
   useForgetPasswordMutation,
   useResetPasswordMutation,
   useGetCurrentUserQuery,
-  useToggleBookMarkPostMutation
+  useToggleBookMarkPostMutation,
+  useToggleFollowUnfollowUserMutation
 } = authApi
