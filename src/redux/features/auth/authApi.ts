@@ -8,7 +8,8 @@ const authApi = baseApi.injectEndpoints({
         url: '/auth/register-user',
         method: 'POST',
         body: userInfo
-      })
+      }),
+      invalidatesTags: ['user']
     }),
     login: builder.mutation({
       query: (userInfo) => ({
@@ -22,7 +23,8 @@ const authApi = baseApi.injectEndpoints({
         url: '/auth/forget-password',
         method: 'POST',
         body: userInfo
-      })
+      }),
+      invalidatesTags: ['user']
     }),
     resetPassword: builder.mutation({
       query: (userInfo) => {
@@ -43,7 +45,8 @@ const authApi = baseApi.injectEndpoints({
           method: 'PUT',
           body: payload
         }
-      }
+      },
+      invalidatesTags: ['user']
     }),
     getCurrentUser: builder.query({
       query: () => {
@@ -56,7 +59,16 @@ const authApi = baseApi.injectEndpoints({
         return {
           data: response.data
         }
-      }
+      },
+      providesTags: ['user']
+    }),
+    toggleBookMarkPost: builder.mutation({
+      query: (userInfo) => ({
+        url: '/user/toggle-bookmark',
+        method: 'PUT',
+        body: userInfo
+      }),
+      invalidatesTags: ['user', 'posts']
     })
   })
 })
@@ -67,5 +79,6 @@ export const {
   useRegisterMutation,
   useForgetPasswordMutation,
   useResetPasswordMutation,
-  useGetCurrentUserQuery
+  useGetCurrentUserQuery,
+  useToggleBookMarkPostMutation
 } = authApi

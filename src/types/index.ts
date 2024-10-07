@@ -51,6 +51,7 @@ export type TUser = {
   isVerified: boolean
   followers: any[]
   following: any[]
+  bookmarkPosts: any[]
   createdAt: string
   updatedAt: string
   __v: number

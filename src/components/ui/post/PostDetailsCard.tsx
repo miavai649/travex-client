@@ -6,13 +6,26 @@ import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card'
 import { Avatar } from '@nextui-org/avatar'
 import { Button } from '@nextui-org/button'
 import { Divider } from '@nextui-org/divider'
-import { Bookmark, MapPin, Share2, ThumbsDown, ThumbsUp } from 'lucide-react'
+import {
+  Bookmark,
+  BookmarkPlus,
+  MapPin,
+  Share2,
+  ThumbsDown,
+  ThumbsUp
+} from 'lucide-react'
 import DetailPageImageGallery from './DetailPageImageGallery'
 import { IPost } from '@/src/types/post.type'
 import { useHandleVotingMutation } from '@/src/redux/features/post/postApi'
 import { useAppSelector } from '@/src/redux/hook'
 import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
 import { Spinner } from '@nextui-org/spinner'
+import {
+  useGetCurrentUserQuery,
+  useToggleBookMarkPostMutation
+} from '@/src/redux/features/auth/authApi'
+import { BsBookmarkFill } from 'react-icons/bs'
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa'
 
 interface IProps {
   postData: IPost
@@ -46,6 +59,10 @@ const PostDetailsCard = ({ postData }: IProps) => {
   // handle voting for post
   const [handleVote] = useHandleVotingMutation()
 
+  // handle bookmarked post
+  const [handleBookMarkPost, { isLoading: handleBookMarkPostLoading }] =
+    useToggleBookMarkPostMutation()
+
   const handleUpvote = async (id: string) => {
     const upvoteData = {
       id,
@@ -71,10 +88,19 @@ const PostDetailsCard = ({ postData }: IProps) => {
     // Implement actual share functionality here
   }
 
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked)
-    // Implement actual bookmark functionality here
+  const handleBookmark = async (postId: string) => {
+    const bookmarkPostData = {
+      id: postId
+    }
+
+    await handleBookMarkPost(bookmarkPostData)
   }
+
+  const { data: currentUserData } = useGetCurrentUserQuery({})
+
+  const bookmarkedPostId = currentUserData?.data?.bookmarkPosts?.map(
+    (item: { _id: any }) => item._id
+  )
 
   return (
     <Card className='w-full'>
@@ -94,11 +120,21 @@ const PostDetailsCard = ({ postData }: IProps) => {
             </div>
           </div>
           <Button
-            size='sm'
+            size='md'
+            isLoading={handleBookMarkPostLoading}
+            spinner={<Spinner size='sm' />}
             variant='light'
-            onClick={handleBookmark}
-            className={isBookmarked ? 'text-primary' : 'text-default-500'}>
-            <Bookmark className='w-5 h-5' />
+            onClick={() => handleBookmark(postData?._id)}
+            className={
+              bookmarkedPostId?.includes(postData?._id)
+                ? 'text-primary'
+                : 'text-default-500'
+            }>
+            {bookmarkedPostId?.includes(postData?._id) ? (
+              <FaBookmark className='w-5 h-5' /> // Filled bookmark
+            ) : (
+              <FaRegBookmark className='w-5 h-5' /> // Outlined bookmark
+            )}
           </Button>
         </div>
         <h1 className='text-3xl font-bold mb-2'>{postData?.title}</h1>
