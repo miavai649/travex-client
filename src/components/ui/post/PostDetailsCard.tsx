@@ -52,8 +52,6 @@ const content = `
   `
 
 const PostDetailsCard = ({ postData }: IProps) => {
-  const [isBookmarked, setIsBookmarked] = useState(false)
-
   // getting current logged in user from redux
   const user = useAppSelector(useCurrentUser)
   // handle voting for post
