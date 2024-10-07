@@ -22,10 +22,12 @@ import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
 import { Spinner } from '@nextui-org/spinner'
 import {
   useGetCurrentUserQuery,
-  useToggleBookMarkPostMutation
+  useToggleBookMarkPostMutation,
+  useToggleFollowUnfollowUserMutation
 } from '@/src/redux/features/auth/authApi'
 import { BsBookmarkFill } from 'react-icons/bs'
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa'
+import { FiUserCheck, FiUserPlus } from 'react-icons/fi' // Icons for follow/unfollow
 
 interface IProps {
   postData: IPost
@@ -52,14 +54,31 @@ const content = `
   `
 
 const PostDetailsCard = ({ postData }: IProps) => {
-  // getting current logged in user from redux
+  const [isFollowing, setIsFollowing] = useState(false)
+
+  // getting current user form redux
   const user = useAppSelector(useCurrentUser)
-  // handle voting for post
+
+  // handle vote rtk query
   const [handleVote] = useHandleVotingMutation()
 
-  // handle bookmarked post
+  // handle book mark post rtk query
   const [handleBookMarkPost, { isLoading: handleBookMarkPostLoading }] =
     useToggleBookMarkPostMutation()
+
+  // handle user follow rtk query
+  const [handleFollow, { isLoading: handleFollowLoading }] =
+    useToggleFollowUnfollowUserMutation()
+
+  const handleFollowToggle = async (id: string) => {
+    if (id) {
+      const followData = {
+        followingId: id
+      }
+
+      await handleFollow(followData)
+    }
+  }
 
   const handleUpvote = async (id: string) => {
     const upvoteData = {
@@ -68,7 +87,6 @@ const PostDetailsCard = ({ postData }: IProps) => {
         action: 'upvote'
       }
     }
-
     await handleVote(upvoteData)
   }
 
@@ -90,7 +108,6 @@ const PostDetailsCard = ({ postData }: IProps) => {
     const bookmarkPostData = {
       id: postId
     }
-
     await handleBookMarkPost(bookmarkPostData)
   }
 
@@ -115,25 +132,56 @@ const PostDetailsCard = ({ postData }: IProps) => {
               <p className='text-sm text-default-500'>
                 {format(new Date(postData?.createdAt!), 'MMM dd, yyyy')}
               </p>
+              {/* Follower Count */}
+              <p className='text-sm text-default-500'>
+                Followers: {postData?.author?.followers?.length}
+              </p>
             </div>
           </div>
-          <Button
-            size='md'
-            isLoading={handleBookMarkPostLoading}
-            spinner={<Spinner size='sm' />}
-            variant='light'
-            onClick={() => handleBookmark(postData?._id)}
-            className={
-              bookmarkedPostId?.includes(postData?._id)
-                ? 'text-primary'
-                : 'text-default-500'
-            }>
-            {bookmarkedPostId?.includes(postData?._id) ? (
-              <FaBookmark className='w-5 h-5' /> // Filled bookmark
-            ) : (
-              <FaRegBookmark className='w-5 h-5' /> // Outlined bookmark
+          <div className='flex gap-2'>
+            {/* follow button */}
+
+            {user?._id !== postData?.author?._id && (
+              <Button
+                size='sm'
+                isLoading={handleFollowLoading}
+                spinner={<Spinner size='sm' />}
+                onClick={() => handleFollowToggle(postData?.author?._id)}
+                className={`${
+                  postData?.author?.followers.includes(user?._id)
+                    ? 'bg-success text-white'
+                    : 'bg-primary text-white'
+                } flex items-center rounded-full `}>
+                {postData?.author?.followers.includes(user?._id) ? (
+                  <>
+                    <FiUserCheck className=' mr-1 w-5 h-5' /> Unfollow
+                  </>
+                ) : (
+                  <>
+                    <FiUserPlus className=' mr-1 w-5 h-5' /> Follow
+                  </>
+                )}
+              </Button>
             )}
-          </Button>
+            {/* Bookmark Button */}
+            <Button
+              size='sm'
+              isLoading={handleBookMarkPostLoading}
+              spinner={<Spinner size='sm' />}
+              variant='light'
+              onClick={() => handleBookmark(postData?._id)}
+              className={
+                bookmarkedPostId?.includes(postData?._id)
+                  ? 'text-primary'
+                  : 'text-default-500'
+              }>
+              {bookmarkedPostId?.includes(postData?._id) ? (
+                <FaBookmark className='w-5 h-5' />
+              ) : (
+                <FaRegBookmark className='w-5 h-5' />
+              )}
+            </Button>
+          </div>
         </div>
         <h1 className='text-3xl font-bold mb-2'>{postData?.title}</h1>
         <p className='text-xl text-default-700 dark:text-default-400 mb-4'>
@@ -195,7 +243,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
           </div>
           <Button size='sm' variant='flat' onClick={handleShare}>
             <Share2 className='w-5 h-5 mr-2' />
-            <span>Share</span>
+            Share
           </Button>
         </div>
       </CardFooter>

@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import {
@@ -26,8 +25,6 @@ import { Spinner } from '@nextui-org/spinner'
 export default function PostCard({ post }: { post: IPost }) {
   // getting current logged in user from redux
   const user = useAppSelector(useCurrentUser)
-
-  const [isFollowing, setIsFollowing] = useState(false)
 
   const [handleFollow, { isLoading: handleFollowLoading }] =
     useToggleFollowUnfollowUserMutation()
@@ -102,16 +99,14 @@ export default function PostCard({ post }: { post: IPost }) {
                 post?.author?.followers.includes(user?._id)
                   ? 'bg-success text-white'
                   : 'bg-primary text-white'
-              } flex items-center gap-2 px-4 py-2 rounded-lg`}>
+              } flex items-center rounded-full `}>
               {post?.author?.followers.includes(user?._id) ? (
                 <>
-                  <FiUserCheck className='w-5 h-5' />{' '}
-                  <span className='text-sm'>Unfollow</span>
+                  <FiUserCheck className=' mr-1 w-5 h-5' /> Unfollow
                 </>
               ) : (
                 <>
-                  <FiUserPlus className='w-5 h-5' />{' '}
-                  <span className='text-sm'>Follow</span>
+                  <FiUserPlus className=' mr-1 w-5 h-5' /> Follow
                 </>
               )}
             </Button>
