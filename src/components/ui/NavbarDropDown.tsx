@@ -43,7 +43,7 @@ const NavbarDropdown = () => {
         <Avatar className='cursor-pointer' src={userData?.data?.profileImage} />
       </DropdownTrigger>
       <DropdownMenu aria-label='Static Actions'>
-        <DropdownItem onClick={() => handleNavigation('/dashboard')}>
+        <DropdownItem onClick={() => handleNavigation('/dashboard/profile')}>
           Dashboard
         </DropdownItem>
         <DropdownItem

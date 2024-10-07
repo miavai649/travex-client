@@ -20,7 +20,7 @@ import { TravexLogo } from '@/src/assets/icons'
 import { ThemeSwitch } from '../theme-switch'
 
 const links = [
-  { item: 'Profile', icon: CgProfile, link: '/dashboard' },
+  { item: 'Profile', icon: CgProfile, link: '/dashboard/profile' },
   { item: 'My Content', icon: CiGrid42, link: '/dashboard/my-content' },
   { item: 'Favourites', icon: FaRegHeart, link: '/dashboard/favourites' },
   { item: 'Edit Profile', icon: RiEditLine, link: '/dashboard/edit-profile' },

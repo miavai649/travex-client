@@ -54,8 +54,6 @@ const content = `
   `
 
 const PostDetailsCard = ({ postData }: IProps) => {
-  const [isFollowing, setIsFollowing] = useState(false)
-
   // getting current user form redux
   const user = useAppSelector(useCurrentUser)
 
@@ -123,12 +121,12 @@ const PostDetailsCard = ({ postData }: IProps) => {
         <div className='flex justify-between w-full mb-4'>
           <div className='flex items-center'>
             <Avatar
-              src={postData?.author.profileImage}
-              alt={postData?.author.name}
+              src={postData?.author?.profileImage}
+              alt={postData?.author?.name}
               className='mr-4'
             />
             <div>
-              <p className='font-semibold text-lg'>{postData?.author.name}</p>
+              <p className='font-semibold text-lg'>{postData?.author?.name}</p>
               <p className='text-sm text-default-500'>
                 {format(new Date(postData?.createdAt!), 'MMM dd, yyyy')}
               </p>
