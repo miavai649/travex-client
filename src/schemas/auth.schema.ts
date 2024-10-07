@@ -22,6 +22,17 @@ export const resetPasswordValidationSchema = z
     message: 'Passwords do not match'
   })
 
+export const userUpdateValidationSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
+  mobileNumber: z
+    .string()
+    .min(10, { message: 'Mobile number must be at least 10 digits' })
+    .max(15, { message: 'Mobile number cannot exceed 15 digits' })
+    .regex(/^[0-9]+$/, {
+      message: 'Mobile number should contain only digits'
+    })
+})
+
 export const registerValidationSchema = z
   .object({
     name: z.string().min(1, { message: 'Name is required' }),

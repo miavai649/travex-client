@@ -62,6 +62,16 @@ const authApi = baseApi.injectEndpoints({
       },
       providesTags: ['user']
     }),
+    updateUser: builder.mutation({
+      query: (payload) => {
+        return {
+          url: '/user/update-user',
+          method: 'PUT',
+          body: payload
+        }
+      },
+      invalidatesTags: ['user']
+    }),
     toggleBookMarkPost: builder.mutation({
       query: (userInfo) => ({
         url: '/user/toggle-bookmark',
@@ -89,5 +99,6 @@ export const {
   useResetPasswordMutation,
   useGetCurrentUserQuery,
   useToggleBookMarkPostMutation,
-  useToggleFollowUnfollowUserMutation
+  useToggleFollowUnfollowUserMutation,
+  useUpdateUserMutation
 } = authApi

@@ -15,6 +15,8 @@ export interface IInput {
   name: string
   isRequired?: boolean
   disabled?: boolean
+  isReadOnly?: boolean
+  isDisabled?: boolean
 }
 
 export type TError = {

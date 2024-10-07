@@ -15,9 +15,16 @@ interface IFormConfig {
 interface IProps extends IFormConfig {
   onSubmit: SubmitHandler<any>
   children: ReactNode
+  resetOnSubmit?: boolean
 }
 
-const TForm = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
+const TForm = ({
+  children,
+  onSubmit,
+  defaultValues,
+  resolver,
+  resetOnSubmit = true
+}: IProps) => {
   const formConfig: IFormConfig = {}
 
   if (!!defaultValues) {
@@ -34,7 +41,9 @@ const TForm = ({ children, onSubmit, defaultValues, resolver }: IProps) => {
 
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data)
-    methods.reset()
+    if (resetOnSubmit) {
+      methods.reset()
+    }
   }
 
   return (

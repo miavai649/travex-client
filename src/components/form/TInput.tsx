@@ -13,7 +13,9 @@ const TInput = ({
   placeholder,
   type = 'text',
   label,
-  name
+  name,
+  isReadOnly,
+  isDisabled
 }: IProps) => {
   const {
     register,
@@ -27,6 +29,8 @@ const TInput = ({
       {...register(name)}
       variant={variant}
       size={size}
+      isReadOnly={isReadOnly}
+      isDisabled={isDisabled}
       placeholder={placeholder}
       isRequired={isRequired}
       type={type}

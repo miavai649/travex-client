@@ -16,6 +16,7 @@ import { Button } from '@nextui-org/button'
 import { useGetCurrentUserQuery } from '@/src/redux/features/auth/authApi'
 import Loading from '@/src/components/ui/Loading'
 import { format } from 'date-fns'
+import Link from 'next/link'
 
 const ProfilePage = () => {
   const { data: currentUserData, isLoading: currentUserLoading } =
@@ -122,9 +123,11 @@ const ProfilePage = () => {
             <Divider className='my-6' />
 
             <div className='flex justify-center space-x-4'>
-              <Button color='primary' startContent={<FaUserEdit />}>
-                Edit Profile
-              </Button>
+              <Link href={`/dashboard/edit-profile`}>
+                <Button color='primary' startContent={<FaUserEdit />}>
+                  Edit Profile
+                </Button>
+              </Link>
               {!currentUserData?.data?.isVerified && (
                 <Button
                   color='primary'
