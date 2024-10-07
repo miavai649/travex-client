@@ -56,10 +56,10 @@ export default function AboutUs() {
   return (
     <div className='container mx-auto px-4 py-12 space-y-16'>
       <section className='text-center space-y-4 animate-fade-in'>
-        <h1 className='text-5xl font-bold text-primary transition-all duration-300 ease-in-out hover:scale-105'>
+        <h1 className='text-4xl md:text-5xl font-bold text-center text-primary mb-4'>
           About Travex
         </h1>
-        <p className='text-xl text-default-600 max-w-3xl mx-auto transition-all duration-300 ease-in-out'>
+        <p className='text-xl text-center text-default-600 mb-12'>
           Empowering travelers to share experiences, discover new destinations,
           and create unforgettable memories.
         </p>
@@ -81,7 +81,7 @@ export default function AboutUs() {
               <h2 className='text-3xl font-semibold text-primary transition-all duration-300 ease-in-out hover:translate-x-2'>
                 Our Mission
               </h2>
-              <p className='text-default-700 text-lg transition-all duration-300 ease-in-out hover:text-primary'>
+              <p className='text-default-700 text-lg transition-all duration-300 ease-in-out '>
                 At Travex, we're passionate about connecting travel enthusiasts
                 from around the world. Our platform is designed to inspire,
                 inform, and empower travelers to explore the globe with
