@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Button } from '@nextui-org/button'
 import { Divider } from '@nextui-org/divider'
 import {
@@ -18,6 +18,8 @@ import { RiEditLine } from 'react-icons/ri'
 import { Menu } from 'lucide-react'
 import { TravexLogo } from '@/src/assets/icons'
 import { ThemeSwitch } from '../theme-switch'
+import { useAppDispatch } from '@/src/redux/hook'
+import { logout } from '@/src/redux/features/auth/authSlice'
 
 const links = [
   { item: 'Profile', icon: CgProfile, link: '/dashboard/profile' },
@@ -35,9 +37,16 @@ const links = [
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const toggleSidebar = () => setIsOpen(!isOpen)
   const closeSidebar = () => setIsOpen(false)
+
+  const handleLogout = () => {
+    dispatch(logout())
+    router.push('/')
+  }
 
   return (
     <>
@@ -103,6 +112,7 @@ const Sidebar = () => {
             </div>
             <Button
               className='w-full justify-start text-danger'
+              onClick={() => handleLogout()}
               startContent={<IoLogOutOutline size={20} />}
               variant='flat'
               color='danger'>

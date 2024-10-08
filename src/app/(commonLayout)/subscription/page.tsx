@@ -3,39 +3,39 @@ import Container from '@/src/components/ui/Container'
 
 const subscriptionPlans = [
   {
-    title: 'Free Plan',
-    price: '0',
+    title: 'Explorer Plan (1 Day)',
+    price: '99',
     features: [
-      'Access to basic travel guides',
-      'Create and view public content',
-      'Community forum access'
+      'Access to premium travel guides',
+      'Create and view premium content',
+      'Ad-free experience'
     ],
-    expiry: 'Never'
+    expiry: '1 Day',
+    recommended: false
   },
   {
-    title: 'Explorer Plan',
-    price: '499',
+    title: 'Explorer Plan (7 Days)',
+    price: '299',
     features: [
-      'All Free Plan features',
       'Access to premium travel guides',
       'Create and view premium content',
       'Ad-free experience',
       'Personalized travel recommendations'
     ],
-    expiry: '1 Month',
+    expiry: '7 Days',
     recommended: true
   },
   {
-    title: 'Globetrotter Plan',
-    price: '999',
+    title: 'Explorer Plan (1 Month)',
+    price: '499',
     features: [
-      'All Explorer Plan features',
-      'Priority support',
+      'All 7 Days Plan features',
       'Exclusive travel webinars',
       'Early access to new features',
       'Discounts on partner hotels'
     ],
-    expiry: '3 Months'
+    expiry: '1 Month',
+    recommended: false
   }
 ]
 

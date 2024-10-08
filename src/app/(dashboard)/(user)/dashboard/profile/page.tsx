@@ -129,12 +129,14 @@ const ProfilePage = () => {
                 </Button>
               </Link>
               {!currentUserData?.data?.isVerified && (
-                <Button
-                  color='primary'
-                  variant='bordered'
-                  startContent={<FaUserCheck />}>
-                  Verify Profile
-                </Button>
+                <Link href={`/subscription`}>
+                  <Button
+                    color='primary'
+                    variant='bordered'
+                    startContent={<FaUserCheck />}>
+                    Verify Profile
+                  </Button>
+                </Link>
               )}
             </div>
           </CardBody>

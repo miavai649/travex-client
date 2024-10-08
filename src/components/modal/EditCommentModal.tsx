@@ -1,11 +1,5 @@
 import { FieldValues, SubmitHandler } from 'react-hook-form'
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
-} from '@nextui-org/modal'
+import { Modal, ModalContent, ModalHeader, ModalBody } from '@nextui-org/modal'
 import TForm from '../form/TForm'
 import TInput from '../form/TInput'
 import { Button } from '@nextui-org/button'

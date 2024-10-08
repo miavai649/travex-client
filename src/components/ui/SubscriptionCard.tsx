@@ -6,6 +6,9 @@ import { Button } from '@nextui-org/button'
 import { Chip } from '@nextui-org/chip'
 import { FaCheck } from 'react-icons/fa'
 import { motion } from 'framer-motion'
+import { useAppSelector } from '@/src/redux/hook'
+import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
+import { useCreatePaymentMutation } from '@/src/redux/features/payment/paymentApi'
 
 interface SubscriptionCardProps {
   title: string
@@ -22,6 +25,23 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
   expiry,
   recommended = false
 }) => {
+  const [createPayment] = useCreatePaymentMutation()
+  const user = useAppSelector(useCurrentUser)
+
+  const handlePayment = async () => {
+    const subscriptionData = {
+      user: user?._id,
+      title,
+      price,
+      expiry
+    }
+
+    const res = await createPayment(subscriptionData)
+    if (res) {
+      window.location.href = res?.data?.data?.payment_url
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -30,7 +50,6 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
       whileHover={{ scale: 1.05 }}
       className='w-full max-w-xs'>
       {' '}
-      {/* Add a consistent max width here */}
       <Card
         className={`w-full ${recommended ? 'border-primary border-2' : ''}`}
         shadow='lg'>
@@ -62,8 +81,12 @@ const SubscriptionCard: React.FC<SubscriptionCardProps> = ({
           </ul>
         </CardBody>
         <CardFooter className='pt-0'>
-          <Button color='primary' size='lg' className='w-full'>
-            {price === '0' ? 'Current Plan' : 'Subscribe Now'}
+          <Button
+            color='primary'
+            size='lg'
+            className='w-full'
+            onClick={handlePayment}>
+            Subscribe Now
           </Button>
         </CardFooter>
       </Card>
