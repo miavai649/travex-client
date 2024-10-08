@@ -17,6 +17,8 @@ import { useGetCurrentUserQuery } from '@/src/redux/features/auth/authApi'
 import Loading from '@/src/components/ui/Loading'
 import { format } from 'date-fns'
 import Link from 'next/link'
+import { Badge } from '@nextui-org/badge'
+import { CheckIcon } from 'lucide-react'
 
 const ProfilePage = () => {
   const { data: currentUserData, isLoading: currentUserLoading } =
@@ -32,14 +34,24 @@ const ProfilePage = () => {
         <Card className='bg-background shadow-lg overflow-hidden'>
           <CardHeader className='relative p-0 mb-4'>
             <div className='w-full h-48 bg-gradient-to-r from-blue-400 to-blue-600' />
-            <Avatar
-              src={currentUserData?.data?.profileImage}
-              className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-32 h-32 text-large border-4 border-background'
-              isBordered
-              color='primary'
-            />
+            <div className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-3/4 w-32 h-32'>
+              <Badge
+                isOneChar
+                className={`${!currentUserData?.data?.isVerified ? 'hidden' : ''}`}
+                content={<CheckIcon />}
+                color='success'
+                shape='circle'
+                placement='bottom-right'>
+                <Avatar
+                  src={currentUserData?.data?.profileImage}
+                  isBordered
+                  className='w-32 h-32'
+                  color='primary'
+                />
+              </Badge>
+            </div>
           </CardHeader>
-          <CardBody className='pt-16 px-4 pb-8'>
+          <CardBody className='px-4 pb-8'>
             <div className='text-center mb-6'>
               <h1 className='text-3xl font-bold mb-2'>
                 {currentUserData?.data?.name}
@@ -102,7 +114,7 @@ const ProfilePage = () => {
                 <div className='flex justify-between items-center p-3 bg-default-100 rounded-lg'>
                   <span className='font-medium'>Following</span>
                   <span className='text-primary font-bold'>
-                    {currentUserData?.data?.followers?.length}
+                    {currentUserData?.data?.following?.length}
                   </span>
                 </div>
                 <div className='flex justify-between items-center p-3 bg-default-100 rounded-lg'>
