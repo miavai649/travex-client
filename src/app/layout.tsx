@@ -1,52 +1,53 @@
-import '../styles/globals.css'
-import { Metadata, Viewport } from 'next'
-import { Link } from '@nextui-org/link'
-import clsx from 'clsx'
+import "../styles/globals.css";
+import { Metadata, Viewport } from "next";
+import clsx from "clsx";
+import { Toaster } from "sonner";
 
-import { siteConfig } from '../config/site'
-import { fontSans } from '../config/fonts'
-import { Providers } from './providers'
-import ReduxProviders from '../lib/ReduxProviders'
-import { Toaster } from 'sonner'
+import { siteConfig } from "../config/site";
+import { fontSans } from "../config/fonts";
+import ReduxProviders from "../lib/ReduxProviders";
+
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`
+    template: `%s - ${siteConfig.name}`,
   },
   description: siteConfig.description,
   icons: {
-    icon: '/favicon.ico'
-  }
-}
+    icon: "/favicon.ico",
+  },
+};
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' }
-  ]
-}
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
 
 export default function RootLayout({
-  children
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <ReduxProviders>
-      <html suppressHydrationWarning lang='en'>
+      <html suppressHydrationWarning lang="en">
         <head />
         <body
           className={clsx(
-            'min-h-screen bg-background font-sans antialiased',
-            fontSans.variable
-          )}>
-          <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable,
+          )}
+        >
+          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
             {children}
-            <Toaster richColors expand={false} position='top-center' />
+            <Toaster richColors expand={false} position="top-center" />
           </Providers>
         </body>
       </html>
     </ReduxProviders>
-  )
+  );
 }

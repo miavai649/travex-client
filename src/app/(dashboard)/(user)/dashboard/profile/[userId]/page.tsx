@@ -1,7 +1,7 @@
 interface IProps {
   params: {
-    userId: string
-  }
+    userId: string;
+  };
 }
 
 const page = ({ params }: IProps) => {
@@ -9,7 +9,7 @@ const page = ({ params }: IProps) => {
     <div>
       <h1>This is page component</h1>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

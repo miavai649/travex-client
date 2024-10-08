@@ -1,11 +1,12 @@
 'use client'
 
-import { IInput } from '@/src/types'
 import { Input } from '@nextui-org/input'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { IoMdEyeOff } from 'react-icons/io'
-import { BsEyeFill } from "react-icons/bs";
+import { BsEyeFill } from 'react-icons/bs'
+
+import { IInput } from '@/src/types'
 
 interface IProps extends IInput {}
 
@@ -29,19 +30,15 @@ const TPasswordInput = ({
 
   return (
     <Input
+      errorMessage={(errors[name]?.message as string) ?? ''}
       isInvalid={!!errors[name]}
-      errorMessage={errors[name] ? (errors[name].message as string) : ''}
       {...register(name)}
-      variant={variant}
-      size={size}
-      placeholder={placeholder}
-      isRequired={isRequired}
       endContent={
         <button
+          aria-label='toggle password visibility'
           className='focus:outline-none'
           type='button'
-          onClick={toggleVisibility}
-          aria-label='toggle password visibility'>
+          onClick={toggleVisibility}>
           {isVisible ? (
             <IoMdEyeOff className='text-2xl text-default-400 pointer-events-none' />
           ) : (
@@ -49,8 +46,12 @@ const TPasswordInput = ({
           )}
         </button>
       }
-      type={isVisible ? 'text' : type}
+      isRequired={isRequired}
       label={label}
+      placeholder={placeholder}
+      size={size}
+      type={isVisible ? 'text' : type}
+      variant={variant}
     />
   )
 }

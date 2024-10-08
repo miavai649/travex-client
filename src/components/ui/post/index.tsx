@@ -1,88 +1,89 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { format } from 'date-fns'
+import Link from "next/link";
+import { format } from "date-fns";
 import {
   ThumbsUp,
   ThumbsDown,
   Share2,
   MapPin,
   MessageCircle,
-  Send
-} from 'lucide-react'
-import { Card, CardBody, CardFooter } from '@nextui-org/card'
-import { Avatar } from '@nextui-org/avatar'
-import { Button } from '@nextui-org/button'
-import ImageGallery from './ImageGallery'
-import { IPost } from '@/src/types/post.type'
-import { useAppSelector } from '@/src/redux/hook'
-import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
-import { useHandleVotingMutation } from '@/src/redux/features/post/postApi'
-import { FiUserPlus, FiUserCheck } from 'react-icons/fi'
-import { useToggleFollowUnfollowUserMutation } from '@/src/redux/features/auth/authApi'
-import { Spinner } from '@nextui-org/spinner'
+} from "lucide-react";
+import { Card, CardBody, CardFooter } from "@nextui-org/card";
+import { Avatar } from "@nextui-org/avatar";
+import { Button } from "@nextui-org/button";
+import { FiUserPlus, FiUserCheck } from "react-icons/fi";
+import { Spinner } from "@nextui-org/spinner";
+
+import ImageGallery from "./ImageGallery";
+
+import { IPost } from "@/src/types/post.type";
+import { useAppSelector } from "@/src/redux/hook";
+import { useCurrentUser } from "@/src/redux/features/auth/authSlice";
+import { useHandleVotingMutation } from "@/src/redux/features/post/postApi";
+import { useToggleFollowUnfollowUserMutation } from "@/src/redux/features/auth/authApi";
 
 export default function PostCard({ post }: { post: IPost }) {
   // getting current logged in user from redux
-  const user = useAppSelector(useCurrentUser)
+  const user = useAppSelector(useCurrentUser);
 
   const [handleFollow, { isLoading: handleFollowLoading }] =
-    useToggleFollowUnfollowUserMutation()
+    useToggleFollowUnfollowUserMutation();
 
   const handleFollowToggle = async (id: string) => {
     if (id) {
       const followData = {
-        followingId: id
-      }
+        followingId: id,
+      };
 
-      await handleFollow(followData)
+      await handleFollow(followData);
     }
-  }
+  };
 
   // handle voting for post
-  const [handleVote] = useHandleVotingMutation()
+  const [handleVote] = useHandleVotingMutation();
 
   const handleUpvote = async (id: string) => {
     const upvoteData = {
       id,
       data: {
-        action: 'upvote'
-      }
-    }
+        action: "upvote",
+      },
+    };
 
-    await handleVote(upvoteData)
-  }
+    await handleVote(upvoteData);
+  };
 
   const handleDownvote = async (id: string) => {
     const downvoteData = {
       id,
       data: {
-        action: 'downvote'
-      }
-    }
-    await handleVote(downvoteData)
-  }
+        action: "downvote",
+      },
+    };
+
+    await handleVote(downvoteData);
+  };
 
   const handleShare = () => {
-    console.log('Sharing post:', post._id)
-    
-  }
+    console.log("Sharing post:", post._id);
+  };
 
   return (
-    <Card className='max-w-xl w-full mx-auto'>
-      <CardBody className='p-4'>
+    <Card className="max-w-xl w-full mx-auto">
+      <CardBody className="p-4">
         {/* author information */}
-        <div className='flex items-center justify-between mb-4'>
-          <div className='flex items-center'>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
             <Avatar
-              src={post?.author?.profileImage}
               alt={post?.author?.name}
-              className='mr-3'
+              className="mr-3"
+              src={post?.author?.profileImage}
             />
             <div>
-              <p className='font-semibold text-lg'>{post?.author?.name}</p>
-              <p className='text-sm text-default-500'>
-                {format(new Date(post?.createdAt), 'MMM dd, yyyy')}
+              <p className="font-semibold text-lg">{post?.author?.name}</p>
+              <p className="text-sm text-default-500">
+                {format(new Date(post?.createdAt), "MMM dd, yyyy")}
               </p>
             </div>
           </div>
@@ -91,42 +92,43 @@ export default function PostCard({ post }: { post: IPost }) {
 
           {user?._id !== post?.author?._id && (
             <Button
-              size='sm'
-              isLoading={handleFollowLoading}
-              spinner={<Spinner size='sm' />}
-              onClick={() => handleFollowToggle(post?.author?._id)}
               className={`${
                 post?.author?.followers.includes(user?._id)
-                  ? 'bg-success text-white'
-                  : 'bg-primary text-white'
-              } flex items-center rounded-full `}>
+                  ? "bg-success text-white"
+                  : "bg-primary text-white"
+              } flex items-center rounded-full `}
+              isLoading={handleFollowLoading}
+              size="sm"
+              spinner={<Spinner size="sm" />}
+              onClick={() => handleFollowToggle(post?.author?._id)}
+            >
               {post?.author?.followers.includes(user?._id) ? (
                 <>
-                  <FiUserCheck className=' mr-1 w-5 h-5' /> Unfollow
+                  <FiUserCheck className=" mr-1 w-5 h-5" /> Unfollow
                 </>
               ) : (
                 <>
-                  <FiUserPlus className=' mr-1 w-5 h-5' /> Follow
+                  <FiUserPlus className=" mr-1 w-5 h-5" /> Follow
                 </>
               )}
             </Button>
           )}
         </div>
 
-        <Link href={`/post/${post?._id}`} className='block mb-2'>
-          <h1 className='text-2xl font-bold hover:text-blue-600 transition duration-300'>
+        <Link className="block mb-2" href={`/post/${post?._id}`}>
+          <h1 className="text-2xl font-bold hover:text-blue-600 transition duration-300">
             {post?.title}
           </h1>
         </Link>
-        <p className='text-default-700 dark:text-default-400 mb-4'>
+        <p className="text-default-700 dark:text-default-400 mb-4">
           {post?.description?.substring(0, 100)}...
         </p>
-        <div className='flex items-center mb-4'>
-          <MapPin className='w-4 h-4 text-default-500 mr-1' />
-          <span className='text-sm text-default-500'>{post?.location}</span>
+        <div className="flex items-center mb-4">
+          <MapPin className="w-4 h-4 text-default-500 mr-1" />
+          <span className="text-sm text-default-500">{post?.location}</span>
         </div>
-        <div className='flex flex-wrap gap-2 mb-4'>
-          <span className='bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 text-xs font-semibold px-2.5 py-0.5 rounded'>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <span className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 text-xs font-semibold px-2.5 py-0.5 rounded">
             {post?.category}
           </span>
           {/* {post?.isPremium && (
@@ -134,7 +136,7 @@ export default function PostCard({ post }: { post: IPost }) {
               Premium
             </span>
           )} */}
-          <span className='bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 text-xs font-semibold px-2.5 py-0.5 rounded'>
+          <span className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300 text-xs font-semibold px-2.5 py-0.5 rounded">
             Premium
           </span>
         </div>
@@ -142,43 +144,47 @@ export default function PostCard({ post }: { post: IPost }) {
         {/* post images */}
         <ImageGallery images={post?.images} />
       </CardBody>
-      <CardFooter className='flex flex-wrap justify-between items-center px-4 py-3 bg-default-100 dark:bg-default-50'>
-        <div className='flex space-x-4 mb-2 sm:mb-0'>
+      <CardFooter className="flex flex-wrap justify-between items-center px-4 py-3 bg-default-100 dark:bg-default-50">
+        <div className="flex space-x-4 mb-2 sm:mb-0">
           <Button
-            size='sm'
-            className={`${!post?.upvote?.includes(user?._id || '') ? 'text-default-500' : 'text-blue-600'}`}
-            variant='light'
-            onClick={() => handleUpvote(post?._id)}>
-            <ThumbsUp className='w-5 h-5' />
+            className={`${!post?.upvote?.includes(user?._id || "") ? "text-default-500" : "text-blue-600"}`}
+            size="sm"
+            variant="light"
+            onClick={() => handleUpvote(post?._id)}
+          >
+            <ThumbsUp className="w-5 h-5" />
             <span>{post?.upvote?.length}</span>
           </Button>
           <Button
-            size='sm'
-            className={`${!post?.downvote?.includes(user?._id || '') ? 'text-default-500' : 'text-red-600'}`}
-            variant='light'
-            onClick={() => handleDownvote(post?._id)}>
-            <ThumbsDown className='w-5 h-5' />
+            className={`${!post?.downvote?.includes(user?._id || "") ? "text-default-500" : "text-red-600"}`}
+            size="sm"
+            variant="light"
+            onClick={() => handleDownvote(post?._id)}
+          >
+            <ThumbsDown className="w-5 h-5" />
             <span>{post?.downvote?.length}</span>
           </Button>
           <Link href={`/post/${post?._id}`}>
             <Button
-              size='sm'
-              variant='light'
-              className='text-default-500 hover:text-blue-600'>
-              <MessageCircle className='w-5 h-5' />
+              className="text-default-500 hover:text-blue-600"
+              size="sm"
+              variant="light"
+            >
+              <MessageCircle className="w-5 h-5" />
               <span>{post?.commentCount}</span>
             </Button>
           </Link>
         </div>
         <Button
-          size='sm'
-          variant='light'
+          className="text-default-500 hover:text-blue-600"
+          size="sm"
+          variant="light"
           onClick={handleShare}
-          className='text-default-500 hover:text-blue-600'>
-          <Share2 className='w-5 h-5' />
+        >
+          <Share2 className="w-5 h-5" />
           <span>Share</span>
         </Button>
       </CardFooter>
     </Card>
-  )
+  );
 }

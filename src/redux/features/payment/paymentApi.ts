@@ -1,4 +1,4 @@
-import { baseApi } from '../../api/baseApi'
+import { baseApi } from "../../api/baseApi";
 
 const paymentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -6,13 +6,13 @@ const paymentApi = baseApi.injectEndpoints({
       query: (payload) => {
         return {
           url: `/payment/create`,
-          method: 'POST',
-          body: payload
-        }
+          method: "POST",
+          body: payload,
+        };
       },
-      invalidatesTags: ['payment']
-    })
-  })
-})
+      invalidatesTags: ["payment"],
+    }),
+  }),
+});
 
-export const { useCreatePaymentMutation } = paymentApi
+export const { useCreatePaymentMutation } = paymentApi;

@@ -1,52 +1,64 @@
-import { TResponseRedux } from '@/src/types'
-import { baseApi } from '../../api/baseApi'
-import { IPost } from '@/src/types/post.type'
+import { baseApi } from "../../api/baseApi";
+
+import { TResponseRedux } from "@/src/types";
+import { IPost } from "@/src/types/post.type";
 
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllPost: builder.query({
       query: () => {
         return {
-          url: '/post',
-          method: 'GET'
-        }
+          url: "/post",
+          method: "GET",
+        };
       },
       transformResponse: (response: TResponseRedux<IPost[]>) => {
         return {
-          data: response.data
-        }
+          data: response.data,
+        };
       },
-      providesTags: ['posts']
+      providesTags: ["posts"],
     }),
     getSinglePost: builder.query({
       query: (params) => {
         return {
           url: `/post/${params}`,
-          method: 'GET'
-        }
+          method: "GET",
+        };
       },
       transformResponse: (response: TResponseRedux<IPost>) => {
         return {
-          data: response.data
-        }
+          data: response.data,
+        };
       },
-      providesTags: ['posts']
+      providesTags: ["posts"],
     }),
     handleVoting: builder.mutation({
       query: (payload) => {
         return {
           url: `/post/voting/${payload?.id}`,
-          method: 'PUT',
-          body: payload.data
-        }
+          method: "PUT",
+          body: payload.data,
+        };
       },
-      invalidatesTags: ['posts']
-    })
-  })
-})
+      invalidatesTags: ["posts"],
+    }),
+    addPost: builder.mutation({
+      query: (payload) => {
+        return {
+          url: `/post/create-post`,
+          method: "POST",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["posts"],
+    }),
+  }),
+});
 
 export const {
   useGetAllPostQuery,
   useGetSinglePostQuery,
-  useHandleVotingMutation
-} = postApi
+  useHandleVotingMutation,
+  useAddPostMutation,
+} = postApi;

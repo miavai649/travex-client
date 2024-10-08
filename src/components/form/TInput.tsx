@@ -1,8 +1,9 @@
 'use client'
 
-import { IInput } from '@/src/types'
 import { Input } from '@nextui-org/input'
 import { useFormContext } from 'react-hook-form'
+
+import { IInput } from '@/src/types'
 
 interface IProps extends IInput {}
 
@@ -24,17 +25,17 @@ const TInput = ({
 
   return (
     <Input
+      errorMessage={(errors[name]?.message as string) ?? ''}
       isInvalid={!!errors[name]}
-      errorMessage={errors[name] ? (errors[name].message as string) : ''}
       {...register(name)}
-      variant={variant}
-      size={size}
-      isReadOnly={isReadOnly}
       isDisabled={isDisabled}
-      placeholder={placeholder}
+      isReadOnly={isReadOnly}
       isRequired={isRequired}
-      type={type}
       label={label}
+      placeholder={placeholder}
+      size={size}
+      type={type}
+      variant={variant}
     />
   )
 }
