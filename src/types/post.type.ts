@@ -4,6 +4,7 @@ export interface IPost {
   _id: string
   title: string
   content: string
+  description: string
   author: TUser
   images: string[]
   category: string

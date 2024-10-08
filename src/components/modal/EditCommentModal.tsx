@@ -1,3 +1,4 @@
+'use client'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
 import { Modal, ModalContent, ModalHeader, ModalBody } from '@nextui-org/modal'
 import TForm from '../form/TForm'

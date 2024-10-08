@@ -183,7 +183,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
         </div>
         <h1 className='text-3xl font-bold mb-2'>{postData?.title}</h1>
         <p className='text-xl text-default-700 dark:text-default-400 mb-4'>
-          {postData?.content}
+          {postData?.description}
         </p>
         <div className='flex items-center mb-2'>
           <MapPin className='w-5 h-5 text-default-500 mr-2' />

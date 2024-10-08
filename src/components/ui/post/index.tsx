@@ -65,7 +65,7 @@ export default function PostCard({ post }: { post: IPost }) {
 
   const handleShare = () => {
     console.log('Sharing post:', post._id)
-    // Implement actual share functionality here
+    
   }
 
   return (
@@ -119,7 +119,7 @@ export default function PostCard({ post }: { post: IPost }) {
           </h1>
         </Link>
         <p className='text-default-700 dark:text-default-400 mb-4'>
-          {post?.content?.substring(0, 150)}...
+          {post?.description?.substring(0, 100)}...
         </p>
         <div className='flex items-center mb-4'>
           <MapPin className='w-4 h-4 text-default-500 mr-1' />
