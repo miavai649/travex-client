@@ -5,10 +5,19 @@ import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/card'
 import { Avatar } from '@nextui-org/avatar'
 import { Button } from '@nextui-org/button'
 import { Divider } from '@nextui-org/divider'
-import { CheckIcon, MapPin, Share2, ThumbsDown, ThumbsUp } from 'lucide-react'
+import {
+  CheckIcon,
+  Edit2,
+  MapPin,
+  MoreVertical,
+  Share2,
+  ThumbsDown,
+  ThumbsUp,
+  Trash2
+} from 'lucide-react'
 import { Spinner } from '@nextui-org/spinner'
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa'
-import { FiUserCheck, FiUserPlus } from 'react-icons/fi' // Icons for follow/unfollow
+import { FiUserCheck, FiUserPlus } from 'react-icons/fi'
 
 import DetailPageImageGallery from './DetailPageImageGallery'
 
@@ -22,8 +31,13 @@ import {
   useToggleFollowUnfollowUserMutation
 } from '@/src/redux/features/auth/authApi'
 import { Badge } from '@nextui-org/badge'
-import { useState } from 'react'
 import { toast } from 'sonner'
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger
+} from '@nextui-org/dropdown'
 
 interface IProps {
   postData: IPost
@@ -173,6 +187,33 @@ const PostDetailsCard = ({ postData }: IProps) => {
                 <FaRegBookmark className='w-5 h-5' />
               )}
             </Button>
+            {user?._id === postData?.author?._id && (
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly size='sm' variant='light'>
+                    <MoreVertical className='w-4 h-4' />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label='Comment actions'>
+                  <DropdownItem
+                    key='edit'
+                    startContent={<Edit2 className='w-4 h-4' />}
+                    // onPress={onOpen}
+                  >
+                    Edit
+                  </DropdownItem>
+                  <DropdownItem
+                    key='delete'
+                    className='text-danger'
+                    color='danger'
+                    startContent={<Trash2 className='w-4 h-4' />}
+                    // onPress={() => handleDeleteComment(comment?._id)}
+                  >
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            )}
           </div>
         </div>
 

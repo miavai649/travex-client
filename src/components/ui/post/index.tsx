@@ -33,6 +33,7 @@ import {
   DropdownTrigger
 } from '@nextui-org/dropdown'
 import { Badge } from '@nextui-org/badge'
+import { toast } from 'sonner'
 
 export default function PostCard({ post }: { post: IPost }) {
   // getting current logged in user from redux
@@ -76,8 +77,13 @@ export default function PostCard({ post }: { post: IPost }) {
     await handleVote(downvoteData)
   }
 
-  const handleShare = () => {
-    console.log('Sharing post:', post._id)
+  const handleShare = async (copiedText: string) => {
+    try {
+      await navigator.clipboard.writeText(copiedText)
+      toast.success('Post link copied to clipboard')
+    } catch (err) {
+      console.error('Failed to copy text: ', err)
+    }
   }
 
   return (
@@ -218,10 +224,10 @@ export default function PostCard({ post }: { post: IPost }) {
           </Link>
         </div>
         <Button
+          onClick={() => handleShare(`http://localhost:3000/post/${post?._id}`)}
           className='text-default-500 hover:text-blue-600'
           size='sm'
-          variant='light'
-          onClick={handleShare}>
+          variant='light'>
           <Share2 className='w-5 h-5' />
           <span>Share</span>
         </Button>
