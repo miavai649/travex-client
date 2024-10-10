@@ -4,67 +4,67 @@ import {
   createApi,
   DefinitionType,
   FetchArgs,
-  fetchBaseQuery,
-} from "@reduxjs/toolkit/query/react";
+  fetchBaseQuery
+} from '@reduxjs/toolkit/query/react'
 
-import { RootState } from "../store";
-import { logout, setUser } from "../features/auth/authSlice";
+import { RootState } from '../store'
+import { logout, setUser } from '../features/auth/authSlice'
 
 // main base query
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://travex-server.vercel.app/api",
-  credentials: "include",
+  baseUrl: 'http://localhost:5000/api',
+  credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const state = getState() as RootState;
-    const token = state.auth.token;
+    const state = getState() as RootState
+    const token = state.auth.token
 
     if (token) {
-      headers.set("authorization", token);
+      headers.set('authorization', token)
     }
 
-    return headers;
-  },
-});
+    return headers
+  }
+})
 
 const BaseQueryWithRefreshToken: BaseQueryFn<
   FetchArgs,
   BaseQueryApi,
   DefinitionType
 > = async (args, api, extraOptions): Promise<any> => {
-  let result = await baseQuery(args, api, extraOptions);
+  let result = await baseQuery(args, api, extraOptions)
 
   if (result?.error?.status === 401) {
     const res = await fetch(
-      "https://travex-server.vercel.app/api/auth/refresh-token",
+      'https://travex-server.vercel.app/api/auth/refresh-token',
       {
-        method: "POST",
-        credentials: "include",
-      },
-    );
-    const data = await res.json();
+        method: 'POST',
+        credentials: 'include'
+      }
+    )
+    const data = await res.json()
 
     if (data?.data?.accessToken) {
-      const user = (api.getState() as RootState).auth.user;
+      const user = (api.getState() as RootState).auth.user
 
       api.dispatch(
         setUser({
           user,
-          token: data.data.accessToken,
-        }),
-      );
+          token: data.data.accessToken
+        })
+      )
 
-      result = await baseQuery(args, api, extraOptions);
+      result = await baseQuery(args, api, extraOptions)
     } else {
-      api.dispatch(logout());
+      api.dispatch(logout())
     }
   }
 
-  return result;
-};
+  return result
+}
 
 export const baseApi = createApi({
-  reducerPath: "baseApi",
+  reducerPath: 'baseApi',
   baseQuery: BaseQueryWithRefreshToken,
   endpoints: () => ({}),
-  tagTypes: ["comment", "posts", "user", "payment"],
-});
+  tagTypes: ['comment', 'posts', 'user', 'payment']
+})
