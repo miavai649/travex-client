@@ -1,11 +1,10 @@
 'use client'
-import PostCard from '.'
-
-import { useGetAllPostQuery } from '@/src/redux/features/post/postApi'
+import { useGetCurrentUserPostQuery } from '@/src/redux/features/post/postApi'
 import { IPost } from '@/src/types/post.type'
+import PostCard from '../../ui/post'
 
-const AllPost = () => {
-  const { data: postData } = useGetAllPostQuery({})
+const MyPost = () => {
+  const { data: postData } = useGetCurrentUserPostQuery({})
 
   return (
     <div className='flex flex-col gap-6 my-6'>
@@ -16,4 +15,4 @@ const AllPost = () => {
   )
 }
 
-export default AllPost
+export default MyPost

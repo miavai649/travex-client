@@ -1,125 +1,123 @@
-"use client";
+'use client'
 
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FieldValues, SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { Button } from '@nextui-org/button'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { FieldValues, SubmitHandler } from 'react-hook-form'
+import { toast } from 'sonner'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 
-import TForm from "@/src/components/form/TForm";
-import TInput from "@/src/components/form/TInput";
-import TPasswordInput from "@/src/components/form/TPasswordInput";
-import Loading from "@/src/components/ui/Loading";
-import { ThemeSwitch } from "@/src/components/ui/theme-switch";
+import TForm from '@/src/components/form/TForm'
+import TInput from '@/src/components/form/TInput'
+import TPasswordInput from '@/src/components/form/TPasswordInput'
+import Loading from '@/src/components/ui/Loading'
+import { ThemeSwitch } from '@/src/components/ui/theme-switch'
 import {
   useForgetPasswordMutation,
-  useLoginMutation,
-} from "@/src/redux/features/auth/authApi";
-import { setUser } from "@/src/redux/features/auth/authSlice";
-import { useAppDispatch } from "@/src/redux/hook";
-import { TResponse } from "@/src/types";
-import { verifyToken } from "@/src/utils/verifyToken";
+  useLoginMutation
+} from '@/src/redux/features/auth/authApi'
+import { setUser } from '@/src/redux/features/auth/authSlice'
+import { useAppDispatch } from '@/src/redux/hook'
+import { TResponse } from '@/src/types'
+import { verifyToken } from '@/src/utils/verifyToken'
 import {
   forgetPasswordValidationSchema,
-  loginValidationSchema,
-} from "@/src/schemas/auth.schema";
+  loginValidationSchema
+} from '@/src/schemas/auth.schema'
 
 const Page = () => {
-  const [loginUser, { isLoading }] = useLoginMutation();
-  const dispatch = useAppDispatch();
-  const router = useRouter();
+  const [loginUser, { isLoading }] = useLoginMutation()
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const [toggleForgetPasswordForm, setToggleForgetPasswordForm] =
-    useState(false);
-  const [forgetPassword] = useForgetPasswordMutation();
+    useState(false)
+  const [forgetPassword] = useForgetPasswordMutation()
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const res = (await loginUser(data)) as TResponse<any>;
+    const res = (await loginUser(data)) as TResponse<any>
 
     try {
       if (res.error) {
         toast.error(res.error.data.message, {
-          duration: 2000,
-        });
+          duration: 2000
+        })
       } else {
         toast.success(res.data.message, {
-          duration: 2000,
-        });
+          duration: 2000
+        })
 
-        const token = res.data?.data?.accessToken;
-        const decoded = await verifyToken(token);
+        const token = res.data?.data?.accessToken
+        const decoded = await verifyToken(token)
 
         dispatch(
           setUser({
             token: res.data?.data?.accessToken,
-            user: decoded,
-          }),
-        );
+            user: decoded
+          })
+        )
 
-        router.push("/");
+        router.push('/')
       }
     } catch (error) {
-      toast.error("Something went wrong", { duration: 2000 });
+      toast.error('Something went wrong', { duration: 2000 })
     }
-  };
+  }
 
   const onSubmitForgetPassword: SubmitHandler<FieldValues> = async (data) => {
-    const res = await forgetPassword(data);
+    const res = await forgetPassword(data)
 
     if (res.data) {
-      toast.success(res.data.message);
+      toast.success(res.data.message)
     }
-  };
+  }
 
   return (
     <div>
       {isLoading && <Loading />}
       {toggleForgetPasswordForm ? (
-        <div className="flex h-screen w-full items-center justify-center">
-          <div className="relative flex w-full max-w-md flex-col items-center justify-center rounded-lg border px-8 py-6 bg-default-100 border-default-200 transition-transform duration-500 transform opacity-100">
+        <div className='flex h-screen w-full items-center justify-center'>
+          <div className='relative flex w-full max-w-md flex-col items-center justify-center rounded-lg border px-8 py-6 bg-default-100 border-default-200 transition-transform duration-500 transform opacity-100'>
             {/* theme toggle switch */}
-            <div className="absolute top-4 right-4">
+            <div className='absolute top-4 right-4'>
               <ThemeSwitch />
             </div>
 
-            <h3 className="text-3xl font-bold text-blue-600 mb-2">
+            <h3 className='text-3xl font-bold text-blue-600 mb-2'>
               Reset Your Password
             </h3>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className='text-lg text-gray-600 mb-6'>
               Enter your email to receive a reset link.
             </p>
 
             {/* forget password form */}
-            <div className="w-full">
+            <div className='w-full'>
               <TForm
+                resetOnSubmit={false}
                 resolver={zodResolver(forgetPasswordValidationSchema)}
-                onSubmit={onSubmitForgetPassword}
-              >
-                <div className="py-3">
+                onSubmit={onSubmitForgetPassword}>
+                <div className='py-3'>
                   <TInput
-                    label="Email"
-                    name="email"
-                    placeholder="Enter your email address"
-                    type="email"
+                    label='Email'
+                    name='email'
+                    placeholder='Enter your email address'
+                    type='email'
                   />
                 </div>
 
                 <Button
-                  className="w-full py-2 mt-4 rounded-lg bg-blue-600 text-white font-semibold transition duration-300 transform hover:scale-105"
-                  size="lg"
-                  type="submit"
-                >
+                  className='w-full py-2 mt-4 rounded-lg bg-blue-600 text-white font-semibold transition duration-300 transform hover:scale-105'
+                  size='lg'
+                  type='submit'>
                   Send Reset Link
                 </Button>
               </TForm>
 
-              <div className="mt-4 text-center text-gray-500">
-                Remember your password?{" "}
+              <div className='mt-4 text-center text-gray-500'>
+                Remember your password?{' '}
                 <button
-                  className="text-blue-600 cursor-pointer transition duration-300 hover:underline hover:text-blue-700"
-                  onClick={() => setToggleForgetPasswordForm(false)}
-                >
+                  className='text-blue-600 cursor-pointer transition duration-300 hover:underline hover:text-blue-700'
+                  onClick={() => setToggleForgetPasswordForm(false)}>
                   Log in
                 </button>
               </div>
@@ -127,69 +125,65 @@ const Page = () => {
           </div>
         </div>
       ) : (
-        <div className="flex h-screen w-full items-center justify-center">
-          <div className="relative flex w-full max-w-md flex-col items-center justify-center rounded-lg border px-8 py-6 bg-default-100 border-default-200 transition-transform duration-500 transform opacity-100">
+        <div className='flex h-screen w-full items-center justify-center'>
+          <div className='relative flex w-full max-w-md flex-col items-center justify-center rounded-lg border px-8 py-6 bg-default-100 border-default-200 transition-transform duration-500 transform opacity-100'>
             {/* theme toggle switch */}
-            <div className="absolute top-4 right-4">
+            <div className='absolute top-4 right-4'>
               <ThemeSwitch />
             </div>
 
-            <h3 className="text-3xl font-bold text-blue-600 mb-2">
+            <h3 className='text-3xl font-bold text-blue-600 mb-2'>
               Login to Travex
             </h3>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className='text-lg text-gray-600 mb-6'>
               Welcome Back! Lets Get Started
             </p>
 
             {/* login form */}
-            <div className="w-full">
+            <div className='w-full'>
               <TForm
                 resolver={zodResolver(loginValidationSchema)}
-                onSubmit={onSubmit}
-              >
-                <div className="py-3">
+                onSubmit={onSubmit}>
+                <div className='py-3'>
                   <TInput
-                    label="Email"
-                    name="email"
-                    placeholder="Enter your email"
-                    type="email"
+                    label='Email'
+                    name='email'
+                    placeholder='Enter your email'
+                    type='email'
                   />
                 </div>
 
-                <div className="py-3">
+                <div className='py-3'>
                   <TPasswordInput
-                    label="Password"
-                    name="password"
-                    placeholder="Enter your password"
-                    type="password"
+                    label='Password'
+                    name='password'
+                    placeholder='Enter your password'
+                    type='password'
                   />
                 </div>
 
                 <div>
                   <button
-                    className="text-sm inline-block hover:underline cursor-pointer text-blue-600 font-semibold"
-                    type="button"
-                    onClick={() => setToggleForgetPasswordForm(true)}
-                  >
+                    className='text-sm inline-block hover:underline cursor-pointer text-blue-600 font-semibold'
+                    type='button'
+                    onClick={() => setToggleForgetPasswordForm(true)}>
                     Forget Password?
                   </button>
                 </div>
 
                 <Button
-                  className="w-full py-2 mt-4 rounded-lg bg-blue-600 text-white font-semibold transition duration-300 transform hover:scale-105 "
-                  size="lg"
-                  type="submit"
-                >
+                  className='w-full py-2 mt-4 rounded-lg bg-blue-600 text-white font-semibold transition duration-300 transform hover:scale-105 '
+                  size='lg'
+                  type='submit'>
                   Login
                 </Button>
               </TForm>
 
-              <div className="mt-4 text-center text-gray-500">
-                Don’t have an account?{" "}
+              <div className='mt-4 text-center text-gray-500'>
+                Don’t have an account?{' '}
                 <Link
-                  className="text-blue-600 transition duration-300 hover:underline hover:text-blue-700"
-                  href={"/register"}
-                >
+                  className='text-blue-600 transition duration-300 hover:underline hover:text-blue-700'
+                  href={'/register'}>
                   Register
                 </Link>
               </div>
@@ -198,7 +192,7 @@ const Page = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

@@ -74,5 +74,6 @@ export const {
   useGetAllPostQuery,
   useGetSinglePostQuery,
   useHandleVotingMutation,
-  useAddPostMutation
+  useAddPostMutation,
+  useGetCurrentUserPostQuery
 } = postApi
