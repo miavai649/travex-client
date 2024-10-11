@@ -103,7 +103,6 @@ const PostDetailsCard = ({ postData }: IProps) => {
     const bookmarkPostData = {
       id: postId
     }
-    console.log('🚀 ~ handleBookmark ~ bookmarkPostData:', bookmarkPostData)
 
     await handleBookMarkPost(bookmarkPostData)
   }
@@ -221,7 +220,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
         <h1 className='text-3xl font-bold mb-2'>{postData?.title}</h1>
 
         {/* post details */}
-        <p className='text-xl text-default-700 dark:text-default-400 mb-4'>
+        <p className='text-lg text-default-700 dark:text-gray-300 mb-4'>
           {postData?.description}
         </p>
 

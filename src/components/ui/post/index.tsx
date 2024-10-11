@@ -184,7 +184,7 @@ export default function PostCard({ post }: { post: IPost }) {
             {post?.title}
           </h1>
         </Link>
-        <p className='text-default-700 dark:text-default-400 mb-4'>
+        <p className='text-default-700 dark:text-gray-300 mb-4'>
           {post?.description?.substring(0, 100)}...
         </p>
         <div className='flex items-center mb-4'>
