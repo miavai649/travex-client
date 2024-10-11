@@ -22,7 +22,10 @@ import { FiUserCheck, FiUserPlus } from 'react-icons/fi'
 import DetailPageImageGallery from './DetailPageImageGallery'
 
 import { IPost } from '@/src/types/post.type'
-import { useHandleVotingMutation } from '@/src/redux/features/post/postApi'
+import {
+  useDeletePostMutation,
+  useHandleVotingMutation
+} from '@/src/redux/features/post/postApi'
 import { useAppSelector } from '@/src/redux/hook'
 import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
 import {
@@ -40,12 +43,16 @@ import {
 } from '@nextui-org/dropdown'
 import { useDisclosure } from '@nextui-org/modal'
 import EditPostModal from '../../modal/EditPostModal'
+import { TResponse } from '@/src/types'
+import { useRouter } from 'next/navigation'
 
 interface IProps {
   postData: IPost
 }
 
 const PostDetailsCard = ({ postData }: IProps) => {
+  const router = useRouter()
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   // getting current user form redux
@@ -109,6 +116,37 @@ const PostDetailsCard = ({ postData }: IProps) => {
     }
 
     await handleBookMarkPost(bookmarkPostData)
+  }
+
+  // delete post rtk query hook function
+
+  const [deletePost] = useDeletePostMutation()
+
+  const handleDeletePost = async (postId: string) => {
+    const toastId = toast.loading('Deleting post...')
+
+    const deletePostData = {
+      id: postId
+    }
+
+    try {
+      const res = (await deletePost(deletePostData)) as TResponse<IPost>
+
+      if (res.error) {
+        toast.error(res.error.data.message, {
+          duration: 2000,
+          id: toastId
+        })
+      } else {
+        toast.success('Post deleted successfully', {
+          duration: 2000,
+          id: toastId
+        })
+        router.push('/dashboard/my-content')
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { duration: 2000 })
+    }
   }
 
   const { data: currentUserData } = useGetCurrentUserQuery({})
@@ -209,8 +247,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
                     className='text-danger'
                     color='danger'
                     startContent={<Trash2 className='w-4 h-4' />}
-                    // onPress={() => handleDeleteComment(comment?._id)}
-                  >
+                    onPress={() => handleDeletePost(postData?._id)}>
                     Delete
                   </DropdownItem>
                 </DropdownMenu>
