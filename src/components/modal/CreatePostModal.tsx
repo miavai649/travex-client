@@ -204,6 +204,7 @@ const CreatePostModal = ({ isOpen, onClose }: IProps) => {
         closeButton: 'hover:bg-default-100 active:bg-default-200'
       }}
       isOpen={isOpen}
+      scrollBehavior='inside'
       size='3xl'
       placement='center'
       onOpenChange={onClose}>

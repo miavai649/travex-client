@@ -66,6 +66,16 @@ const postApi = baseApi.injectEndpoints({
         }
       },
       invalidatesTags: ['posts']
+    }),
+    updatePost: builder.mutation({
+      query: (payload) => {
+        return {
+          url: `/post/${payload.id}`,
+          method: 'PUT',
+          body: payload.data
+        }
+      },
+      invalidatesTags: ['posts']
     })
   })
 })
@@ -75,5 +85,6 @@ export const {
   useGetSinglePostQuery,
   useHandleVotingMutation,
   useAddPostMutation,
-  useGetCurrentUserPostQuery
+  useGetCurrentUserPostQuery,
+  useUpdatePostMutation
 } = postApi

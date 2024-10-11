@@ -171,12 +171,7 @@ export default function PostCard({ post }: { post: IPost }) {
             </Dropdown>
           )}
 
-          <EditPostModal
-            postId={post?._id}
-            post={post}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
+          <EditPostModal post={post} isOpen={isOpen} onClose={onClose} />
         </div>
 
         <Link className='block mb-2' href={`/post/${post?._id}`}>

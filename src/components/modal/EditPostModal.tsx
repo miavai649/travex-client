@@ -94,16 +94,16 @@ const formats = [
 interface IProps {
   isOpen: boolean
   onClose: () => void
-  postId: string
   post: IPost
 }
 
-const EditPostModal = ({ isOpen, onClose, postId, post }: IProps) => {
-  console.log('🚀 ~ EditPostModal ~ post:', post)
-  console.log('🚀 ~ EditPostModal ~ postId:', postId)
+const EditPostModal = ({ isOpen, onClose, post }: IProps) => {
+  const [isPremiumContent, setIsPremiumContent] = useState<boolean>(
+    post?.isPremium
+  )
   const [imageFiles, setImageFiles] = useState<File[] | []>([])
   const [imagePreviews, setImagePreviews] = useState<string[] | []>([])
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(post?.content)
 
   const { data: currentUserData } = useGetCurrentUserQuery({})
 
@@ -169,6 +169,14 @@ const EditPostModal = ({ isOpen, onClose, postId, post }: IProps) => {
     setImagePreviews((prev) => prev.filter((_, i) => i !== index))
   }
 
+  const postDefaultValues = {
+    title: post.title,
+    description: post.description,
+    location: post.location,
+    category: post.category,
+    isPremium: post.isPremium
+  }
+
   return (
     <Modal
       size='3xl'
@@ -180,6 +188,7 @@ const EditPostModal = ({ isOpen, onClose, postId, post }: IProps) => {
         closeButton: 'hover:bg-default-100 active:bg-default-200'
       }}
       isOpen={isOpen}
+      scrollBehavior='inside'
       placement='center'
       onOpenChange={onClose}>
       <ModalContent>
@@ -189,7 +198,10 @@ const EditPostModal = ({ isOpen, onClose, postId, post }: IProps) => {
               <h2 className='text-xl font-bold'>Edit Comment</h2>
             </ModalHeader>
             <ModalBody className='my-8'>
-              <TForm resetOnSubmit={true} onSubmit={onSubmit}>
+              <TForm
+                defaultValues={postDefaultValues}
+                resetOnSubmit={true}
+                onSubmit={onSubmit}>
                 <div className='space-y-6'>
                   <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                     <div className='sm:col-span-2'>
@@ -208,10 +220,15 @@ const EditPostModal = ({ isOpen, onClose, postId, post }: IProps) => {
                     </div>
                     {currentUserData?.data?.isVerified && (
                       <div className='sm:col-span-2 flex items-center'>
-                        <TCheckbox
-                          name='isPremium'
-                          label='Make this post premium content'
-                        />
+                        <Checkbox
+                          isSelected={isPremiumContent}
+                          radius='full'
+                          value='premium'
+                          onValueChange={setIsPremiumContent}>
+                          <span className='text-sm'>
+                            Make this post premium content
+                          </span>
+                        </Checkbox>
                       </div>
                     )}
                   </div>
