@@ -34,8 +34,12 @@ import {
 } from '@nextui-org/dropdown'
 import { Badge } from '@nextui-org/badge'
 import { toast } from 'sonner'
+import { useDisclosure } from '@nextui-org/modal'
+import EditPostModal from '../../modal/EditPostModal'
 
 export default function PostCard({ post }: { post: IPost }) {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   // getting current logged in user from redux
   const user = useAppSelector(useCurrentUser)
 
@@ -151,8 +155,7 @@ export default function PostCard({ post }: { post: IPost }) {
                 <DropdownItem
                   key='edit'
                   startContent={<Edit2 className='w-4 h-4' />}
-                  // onPress={onOpen}
-                >
+                  onPress={onOpen}>
                   Edit
                 </DropdownItem>
                 <DropdownItem
@@ -167,6 +170,13 @@ export default function PostCard({ post }: { post: IPost }) {
               </DropdownMenu>
             </Dropdown>
           )}
+
+          <EditPostModal
+            postId={post?._id}
+            post={post}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
         </div>
 
         <Link className='block mb-2' href={`/post/${post?._id}`}>
