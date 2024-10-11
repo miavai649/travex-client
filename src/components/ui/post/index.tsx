@@ -24,7 +24,10 @@ import ImageGallery from './ImageGallery'
 import { IPost } from '@/src/types/post.type'
 import { useAppSelector } from '@/src/redux/hook'
 import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
-import { useHandleVotingMutation } from '@/src/redux/features/post/postApi'
+import {
+  useDeletePostMutation,
+  useHandleVotingMutation
+} from '@/src/redux/features/post/postApi'
 import { useToggleFollowUnfollowUserMutation } from '@/src/redux/features/auth/authApi'
 import {
   Dropdown,
@@ -36,6 +39,7 @@ import { Badge } from '@nextui-org/badge'
 import { toast } from 'sonner'
 import { useDisclosure } from '@nextui-org/modal'
 import EditPostModal from '../../modal/EditPostModal'
+import { TResponse } from '@/src/types'
 
 export default function PostCard({ post }: { post: IPost }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -46,6 +50,7 @@ export default function PostCard({ post }: { post: IPost }) {
   const [handleFollow, { isLoading: handleFollowLoading }] =
     useToggleFollowUnfollowUserMutation()
 
+  // handle follow button function
   const handleFollowToggle = async (id: string) => {
     if (id) {
       const followData = {
@@ -56,7 +61,7 @@ export default function PostCard({ post }: { post: IPost }) {
     }
   }
 
-  // handle voting for post
+  // handle upvote function
   const [handleVote] = useHandleVotingMutation()
 
   const handleUpvote = async (id: string) => {
@@ -70,6 +75,7 @@ export default function PostCard({ post }: { post: IPost }) {
     await handleVote(upvoteData)
   }
 
+  // handle downvote function
   const handleDownvote = async (id: string) => {
     const downvoteData = {
       id,
@@ -81,12 +87,43 @@ export default function PostCard({ post }: { post: IPost }) {
     await handleVote(downvoteData)
   }
 
+  // handle share function
   const handleShare = async (copiedText: string) => {
     try {
       await navigator.clipboard.writeText(copiedText)
       toast.success('Post link copied to clipboard')
     } catch (err) {
       console.error('Failed to copy text: ', err)
+    }
+  }
+
+  // delete post rtk query hook function
+
+  const [deletePost] = useDeletePostMutation()
+
+  const handleDeletePost = async (postId: string) => {
+    const toastId = toast.loading('Deleting post...')
+
+    const deletePostData = {
+      id: postId
+    }
+
+    try {
+      const res = (await deletePost(deletePostData)) as TResponse<IPost>
+
+      if (res.error) {
+        toast.error(res.error.data.message, {
+          duration: 2000,
+          id: toastId
+        })
+      } else {
+        toast.success('Post deleted successfully', {
+          duration: 2000,
+          id: toastId
+        })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { duration: 2000 })
     }
   }
 
@@ -163,8 +200,7 @@ export default function PostCard({ post }: { post: IPost }) {
                   className='text-danger'
                   color='danger'
                   startContent={<Trash2 className='w-4 h-4' />}
-                  // onPress={() => handleDeleteComment(comment?._id)}
-                >
+                  onPress={() => handleDeletePost(post?._id)}>
                   Delete
                 </DropdownItem>
               </DropdownMenu>

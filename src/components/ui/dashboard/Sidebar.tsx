@@ -89,7 +89,7 @@ const Sidebar = () => {
 
           <Divider />
 
-          <nav className='flex-grow overflow-y-auto p-4 space-y-2'>
+          <nav className='flex-grow overflow-y-auto p-4 space-y-6'>
             {links.map((item) => (
               <Link key={item.link} href={item.link} onClick={closeSidebar}>
                 <Button
