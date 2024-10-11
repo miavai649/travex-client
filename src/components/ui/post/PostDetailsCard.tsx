@@ -38,12 +38,16 @@ import {
   DropdownMenu,
   DropdownTrigger
 } from '@nextui-org/dropdown'
+import { useDisclosure } from '@nextui-org/modal'
+import EditPostModal from '../../modal/EditPostModal'
 
 interface IProps {
   postData: IPost
 }
 
 const PostDetailsCard = ({ postData }: IProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   // getting current user form redux
   const user = useAppSelector(useCurrentUser)
 
@@ -197,8 +201,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
                   <DropdownItem
                     key='edit'
                     startContent={<Edit2 className='w-4 h-4' />}
-                    // onPress={onOpen}
-                  >
+                    onPress={onOpen}>
                     Edit
                   </DropdownItem>
                   <DropdownItem
@@ -213,6 +216,7 @@ const PostDetailsCard = ({ postData }: IProps) => {
                 </DropdownMenu>
               </Dropdown>
             )}
+            <EditPostModal post={postData} isOpen={isOpen} onClose={onClose} />
           </div>
         </div>
 
