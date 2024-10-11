@@ -22,6 +22,11 @@ import { FaImage, FaTrash } from 'react-icons/fa'
 import { Divider } from '@nextui-org/divider'
 import { IPost } from '@/src/types/post.type'
 import TCheckbox from '../form/TCheckBox'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { postValidationSchema } from '@/src/schemas/post.schema'
+import { useUpdatePostMutation } from '@/src/redux/features/post/postApi'
+import { TResponse } from '@/src/types'
+import { Spinner } from '@nextui-org/spinner'
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false
@@ -53,6 +58,9 @@ const modules = {
           const file = input?.files?.[0]
 
           if (file) {
+            const toastId = toast.loading('Image uploading', {
+              duration: 2000
+            })
             if (file.size > 10485760) {
               return toast.warning(
                 'File size exceeds 10 MB limit. Please select a smaller file.'
@@ -61,6 +69,10 @@ const modules = {
             const url = await uploadImageToCloudinary(file)
 
             if (url) {
+              toast.success('Image uploaded successfully', {
+                duration: 2000,
+                id: toastId
+              })
               const quill = (this as any).quill
               const range = quill.getSelection()
 
@@ -107,41 +119,48 @@ const EditPostModal = ({ isOpen, onClose, post }: IProps) => {
 
   const { data: currentUserData } = useGetCurrentUserQuery({})
 
+  const [handlePostUpdate, { isLoading: handlePostUpdateLoading }] =
+    useUpdatePostMutation()
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data)
-    //  const formData = new FormData()
+    const formData = new FormData()
 
-    //  const postData = {
-    //    ...data,
-    //    content: value,
-    //    author: currentUserData?.data?._id,
-    //    isPremium: isPremiumContent
-    //  }
+    const postData = {
+      ...data,
+      content: value,
+      author: currentUserData?.data?._id,
+      isPremium: isPremiumContent
+    }
 
-    //  formData.append('postData', JSON.stringify(postData))
+    formData.append('postData', JSON.stringify(postData))
 
-    //  for (const image of imageFiles) {
-    //    formData.append('postImages', image)
-    //  }
+    for (const image of imageFiles) {
+      formData.append('postImages', image)
+    }
 
-    //  console.log(formData.get('postData'))
-    //  console.log(formData.get('postImages'))
+    const updatePostData = {
+      data: formData,
+      id: post?._id
+    }
 
-    //  try {
-    //    const res = (await handleAddPost(formData)) as TResponse<IPost>
+    try {
+      const res = (await handlePostUpdate(updatePostData)) as TResponse<IPost>
 
-    //    if (res.error) {
-    //      toast.error(res.error.data.message, {
-    //        duration: 2000
-    //      })
-    //    } else {
-    //      toast.success('Post created successfully', {
-    //        duration: 2000
-    //      })
-    //    }
-    //  } catch (error) {
-    //    toast.error('Something went wrong', { duration: 2000 })
-    //  }
+      if (res.error) {
+        toast.error(res.error.data.message, {
+          duration: 2000
+        })
+      } else {
+        toast.success('Post created successfully', {
+          duration: 2000
+        })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { duration: 2000 })
+    } finally {
+      onClose()
+    }
   }
 
   // image upload and showing preview
@@ -201,6 +220,7 @@ const EditPostModal = ({ isOpen, onClose, post }: IProps) => {
               <TForm
                 defaultValues={postDefaultValues}
                 resetOnSubmit={true}
+                resolver={zodResolver(postValidationSchema)}
                 onSubmit={onSubmit}>
                 <div className='space-y-6'>
                   <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
@@ -308,8 +328,9 @@ const EditPostModal = ({ isOpen, onClose, post }: IProps) => {
                       className='w-full sm:w-2/3 md:w-1/2 py-2 rounded-lg bg-blue-600 text-white font-semibold transition duration-300 hover:bg-blue-700'
                       size='lg'
                       type='submit'
-                      onPress={() => onClose()}>
-                      Create Post
+                      isLoading={handlePostUpdateLoading}
+                      spinner={<Spinner color='current' size='sm' />}>
+                      Update
                     </Button>
                   </div>
                 </div>
