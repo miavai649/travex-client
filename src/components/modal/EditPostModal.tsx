@@ -5,7 +5,12 @@ import { Button } from '@nextui-org/button'
 import dynamic from 'next/dynamic'
 import { toast } from 'sonner'
 import uploadImageToCloudinary from '@/src/utils/uploadImageToCloudinary'
-import { FieldValues, SubmitHandler } from 'react-hook-form'
+import {
+  Controller,
+  FieldValues,
+  SubmitHandler,
+  useFormContext
+} from 'react-hook-form'
 import TInput from '../form/TInput'
 import TSelect from '../form/TSelect'
 import { postCategoriesOptions } from './CreatePostModal'
@@ -16,6 +21,7 @@ import TTextarea from '../form/TTextArea'
 import { FaImage, FaTrash } from 'react-icons/fa'
 import { Divider } from '@nextui-org/divider'
 import { IPost } from '@/src/types/post.type'
+import TCheckbox from '../form/TCheckBox'
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false
@@ -95,7 +101,6 @@ interface IProps {
 const EditPostModal = ({ isOpen, onClose, postId, post }: IProps) => {
   console.log('🚀 ~ EditPostModal ~ post:', post)
   console.log('🚀 ~ EditPostModal ~ postId:', postId)
-  const [isPremiumContent, setIsPremiumContent] = useState<boolean>(false)
   const [imageFiles, setImageFiles] = useState<File[] | []>([])
   const [imagePreviews, setImagePreviews] = useState<string[] | []>([])
   const [value, setValue] = useState('')
@@ -203,15 +208,10 @@ const EditPostModal = ({ isOpen, onClose, postId, post }: IProps) => {
                     </div>
                     {currentUserData?.data?.isVerified && (
                       <div className='sm:col-span-2 flex items-center'>
-                        <Checkbox
-                          isSelected={isPremiumContent}
-                          radius='full'
-                          value='premium'
-                          onValueChange={setIsPremiumContent}>
-                          <span className='text-sm'>
-                            Make this post premium content
-                          </span>
-                        </Checkbox>
+                        <TCheckbox
+                          name='isPremium'
+                          label='Make this post premium content'
+                        />
                       </div>
                     )}
                   </div>

@@ -24,6 +24,8 @@ import { TResponse } from '@/src/types'
 import { useAddPostMutation } from '@/src/redux/features/post/postApi'
 import uploadImageToCloudinary from '@/src/utils/uploadImageToCloudinary'
 import { useGetCurrentUserQuery } from '@/src/redux/features/auth/authApi'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createPostValidationSchema } from '@/src/schemas/post.schema'
 
 const ReactQuill = dynamic(() => import('react-quill'), {
   ssr: false
@@ -188,7 +190,10 @@ const CreatePostModal = () => {
       size='3xl'
       title='Create a new Post'>
       {(onClose) => (
-        <TForm resetOnSubmit={true} onSubmit={onSubmit}>
+        <TForm
+          resetOnSubmit={true}
+          onSubmit={onSubmit}
+          resolver={zodResolver(createPostValidationSchema)}>
           <div className='space-y-6'>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <div className='sm:col-span-2'>
@@ -290,7 +295,7 @@ const CreatePostModal = () => {
 
             <div className='flex justify-center mt-6'>
               <Button
-                className='w-full sm:w-2/3 md:w-1/2 py-2 rounded-lg bg-blue-600 text-white font-semibold transition duration-300 hover:bg-blue-700'
+                className='w-full sm:w-2/3 md:w-1/2 py-2 rounded-lg bg-blue-600 text-white font-semibold transition duration-300 hover:bg-blue-700 mb-6'
                 size='lg'
                 type='submit'
                 onPress={() => onClose()}>
