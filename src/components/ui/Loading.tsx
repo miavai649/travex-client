@@ -1,5 +1,4 @@
-import { Spinner } from '@nextui-org/spinner'
-import { RotateLoader, ScaleLoader } from 'react-spinners'
+import { RotateLoader } from 'react-spinners'
 const Loading = () => {
   return (
     <div className=' h-screen bg-black/10 fixed inset-0 backdrop-blur-md z-[999] flex justify-center items-center'>
