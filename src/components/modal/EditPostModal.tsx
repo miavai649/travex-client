@@ -123,7 +123,6 @@ const EditPostModal = ({ isOpen, onClose, post }: IProps) => {
     useUpdatePostMutation()
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data)
     const formData = new FormData()
 
     const postData = {

@@ -17,7 +17,8 @@ const authApi = baseApi.injectEndpoints({
         url: '/auth/login',
         method: 'POST',
         body: userInfo
-      })
+      }),
+      invalidatesTags: ['user']
     }),
     forgetPassword: builder.mutation({
       query: (userInfo) => ({
@@ -37,7 +38,8 @@ const authApi = baseApi.injectEndpoints({
             Authorization: userInfo?.token
           }
         }
-      }
+      },
+      invalidatesTags: ['user']
     }),
     changePassword: builder.mutation({
       query: (payload) => {
@@ -75,7 +77,6 @@ const authApi = baseApi.injectEndpoints({
     }),
     toggleBookMarkPost: builder.mutation({
       query: (userInfo) => {
-        console.log(userInfo)
         return {
           url: '/user/toggle-bookmark',
           method: 'PUT',

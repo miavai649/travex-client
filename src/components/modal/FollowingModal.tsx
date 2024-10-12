@@ -65,7 +65,7 @@ const FollowingModal = ({ isOpen, onClose }: IProps) => {
               ) : following?.length === 0 ? (
                 <div className='flex justify-center items-center h-40'>
                   <p className='text-md text-gray-500 font-semibold'>
-                    You are not following anyone yet.
+                    You have no followers anyone yet.
                   </p>
                 </div>
               ) : (

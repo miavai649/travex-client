@@ -10,7 +10,6 @@ const MyBookmark = () => {
     useGetCurrentUserQuery({})
 
   const bookmarkedPosts = currentUser?.data?.bookmarkPosts
-  console.log('🚀 ~ MyBookmark ~ bookmarkedPosts:', bookmarkedPosts)
 
   return (
     <div>
