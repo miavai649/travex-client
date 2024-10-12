@@ -20,11 +20,12 @@ import { ThemeSwitch } from '../theme-switch'
 import { TravexLogo } from '@/src/assets/icons'
 import { useAppDispatch } from '@/src/redux/hook'
 import { logout } from '@/src/redux/features/auth/authSlice'
+import { BsBookmarks } from 'react-icons/bs'
 
 const links = [
   { item: 'Profile', icon: CgProfile, link: '/dashboard/profile' },
   { item: 'My Content', icon: CiGrid42, link: '/dashboard/my-content' },
-  { item: 'Favourites', icon: FaRegHeart, link: '/dashboard/favourites' },
+  { item: 'Bookmark', icon: BsBookmarks, link: '/dashboard/bookmark' },
   { item: 'Edit Profile', icon: RiEditLine, link: '/dashboard/edit-profile' },
   {
     item: 'Change Password',

@@ -163,7 +163,7 @@ export default function PostCard({ post }: { post: IPost }) {
           {user?._id !== post?.author?._id ? (
             <Button
               className={`${
-                post?.author?.followers.includes(user?._id)
+                post?.author?.followers?.includes(user?._id)
                   ? 'bg-success text-white'
                   : 'bg-primary text-white'
               } flex items-center rounded-full `}
@@ -171,7 +171,7 @@ export default function PostCard({ post }: { post: IPost }) {
               size='sm'
               spinner={<Spinner size='sm' />}
               onClick={() => handleFollowToggle(post?.author?._id)}>
-              {post?.author?.followers.includes(user?._id) ? (
+              {post?.author?.followers?.includes(user?._id) ? (
                 <>
                   <FiUserCheck className=' mr-1 w-5 h-5' /> Unfollow
                 </>
