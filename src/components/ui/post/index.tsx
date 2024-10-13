@@ -40,13 +40,13 @@ import { toast } from 'sonner'
 import { useDisclosure } from '@nextui-org/modal'
 import EditPostModal from '../../modal/EditPostModal'
 import { TResponse } from '@/src/types'
+import { Tooltip } from '@nextui-org/tooltip'
 
 export default function PostCard({ post }: { post: IPost }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   // getting current logged in user from redux
   const user = useAppSelector(useCurrentUser)
-
   const [handleFollow, { isLoading: handleFollowLoading }] =
     useToggleFollowUnfollowUserMutation()
 
@@ -161,26 +161,33 @@ export default function PostCard({ post }: { post: IPost }) {
           {/* follow button */}
 
           {user?._id !== post?.author?._id ? (
-            <Button
-              className={`${
-                post?.author?.followers?.includes(user?._id)
-                  ? 'bg-success text-white'
-                  : 'bg-primary text-white'
-              } flex items-center rounded-full `}
-              isLoading={handleFollowLoading}
-              size='sm'
-              spinner={<Spinner size='sm' />}
-              onClick={() => handleFollowToggle(post?.author?._id)}>
-              {post?.author?.followers?.includes(user?._id) ? (
-                <>
-                  <FiUserCheck className=' mr-1 w-5 h-5' /> Unfollow
-                </>
-              ) : (
-                <>
-                  <FiUserPlus className=' mr-1 w-5 h-5' /> Follow
-                </>
-              )}
-            </Button>
+            <Tooltip
+              color='warning'
+              closeDelay={2000}
+              content='Login First'
+              isDisabled={user !== null}>
+              <Button
+                className={`${
+                  post?.author?.followers?.includes(user?._id)
+                    ? 'bg-success text-white'
+                    : 'bg-primary text-white'
+                } flex items-center rounded-full `}
+                isLoading={handleFollowLoading}
+                size='sm'
+                disabled={user === null}
+                spinner={<Spinner size='sm' />}
+                onClick={() => handleFollowToggle(post?.author?._id)}>
+                {post?.author?.followers?.includes(user?._id) ? (
+                  <>
+                    <FiUserCheck className=' mr-1 w-5 h-5' /> Unfollow
+                  </>
+                ) : (
+                  <>
+                    <FiUserPlus className=' mr-1 w-5 h-5' /> Follow
+                  </>
+                )}
+              </Button>
+            </Tooltip>
           ) : (
             <Dropdown>
               <DropdownTrigger>
@@ -243,22 +250,36 @@ export default function PostCard({ post }: { post: IPost }) {
       </CardBody>
       <CardFooter className='flex flex-wrap justify-between items-center px-4 py-3 bg-default-100 dark:bg-default-50'>
         <div className='flex space-x-4 mb-2 sm:mb-0'>
-          <Button
-            className={`${!post?.upvote?.includes(user?._id || '') ? 'text-default-500' : 'text-blue-600'}`}
-            size='sm'
-            variant='light'
-            onClick={() => handleUpvote(post?._id)}>
-            <ThumbsUp className='w-5 h-5' />
-            <span>{post?.upvote?.length}</span>
-          </Button>
-          <Button
-            className={`${!post?.downvote?.includes(user?._id || '') ? 'text-default-500' : 'text-red-600'}`}
-            size='sm'
-            variant='light'
-            onClick={() => handleDownvote(post?._id)}>
-            <ThumbsDown className='w-5 h-5' />
-            <span>{post?.downvote?.length}</span>
-          </Button>
+          <Tooltip
+            color='warning'
+            closeDelay={2000}
+            content='Login First'
+            isDisabled={user !== null}>
+            <Button
+              disabled={user === null}
+              className={`${!post?.upvote?.includes(user?._id || '') ? 'text-default-500' : 'text-blue-600'}`}
+              size='sm'
+              variant='light'
+              onClick={() => handleUpvote(post?._id)}>
+              <ThumbsUp className='w-5 h-5' />
+              <span>{post?.upvote?.length}</span>
+            </Button>
+          </Tooltip>
+          <Tooltip
+            color='warning'
+            closeDelay={2000}
+            content='Login First'
+            isDisabled={user !== null}>
+            <Button
+              disabled={user === null}
+              className={`${!post?.downvote?.includes(user?._id || '') ? 'text-default-500' : 'text-red-600'}`}
+              size='sm'
+              variant='light'
+              onClick={() => handleDownvote(post?._id)}>
+              <ThumbsDown className='w-5 h-5' />
+              <span>{post?.downvote?.length}</span>
+            </Button>
+          </Tooltip>
           <Link href={`/post/${post?._id}`}>
             <Button
               className='text-default-500 hover:text-blue-600'

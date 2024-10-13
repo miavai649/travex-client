@@ -17,12 +17,17 @@ import { useAddCommentMutation } from '@/src/redux/features/comment/commentApi'
 import TTextarea from '@/src/components/form/TTextArea'
 import TForm from '@/src/components/form/TForm'
 import { TComment } from '@/src/types/comment.type'
+import { Tooltip } from '@nextui-org/tooltip'
+import { useAppSelector } from '@/src/redux/hook'
+import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
 
 interface IProps {
   commentData: TComment[]
 }
 
 const Comment = ({ commentData }: IProps) => {
+  // getting current user form redux
+  const user = useAppSelector(useCurrentUser)
   const { postId } = useParams()
 
   const [addComment, { isLoading }] = useAddCommentMutation()
@@ -66,15 +71,22 @@ const Comment = ({ commentData }: IProps) => {
             onSubmit={onSubmit}>
             <TTextarea label='Share your thoughts...' name='comment' />
             <div className='flex justify-end mt-4'>
-              <Button
-                className='px-6'
-                color='primary'
-                isLoading={isLoading}
-                spinner={<Spinner color='default' size='sm' />}
-                startContent={<Send className='w-4 h-4' />}
-                type='submit'>
-                Send
-              </Button>
+              <Tooltip
+                color='warning'
+                closeDelay={2000}
+                content='Login First'
+                isDisabled={user !== null}>
+                <Button
+                  disabled={user === null}
+                  className='px-6'
+                  color='primary'
+                  isLoading={isLoading}
+                  spinner={<Spinner color='default' size='sm' />}
+                  startContent={<Send className='w-4 h-4' />}
+                  type='submit'>
+                  Send
+                </Button>
+              </Tooltip>
             </div>
           </TForm>
         </div>

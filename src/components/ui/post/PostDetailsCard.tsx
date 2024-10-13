@@ -45,6 +45,7 @@ import { useDisclosure } from '@nextui-org/modal'
 import EditPostModal from '../../modal/EditPostModal'
 import { TResponse } from '@/src/types'
 import { useRouter } from 'next/navigation'
+import { Tooltip } from '@nextui-org/tooltip'
 
 interface IProps {
   postData: IPost
@@ -190,44 +191,58 @@ const PostDetailsCard = ({ postData }: IProps) => {
           </div>
           <div className='flex gap-2'>
             {user?._id !== postData?.author?._id && (
+              <Tooltip
+                color='warning'
+                closeDelay={2000}
+                content='Login First'
+                isDisabled={user !== null}>
+                <Button
+                  disabled={user === null}
+                  className={`${
+                    postData?.author?.followers.includes(user?._id)
+                      ? 'bg-success text-white'
+                      : 'bg-primary text-white'
+                  } flex items-center rounded-full`}
+                  isLoading={handleFollowLoading}
+                  size='sm'
+                  spinner={<Spinner size='sm' />}
+                  onClick={() => handleFollowToggle(postData?.author?._id)}>
+                  {postData?.author?.followers.includes(user?._id) ? (
+                    <>
+                      <FiUserCheck className='mr-1 w-5 h-5' /> Unfollow
+                    </>
+                  ) : (
+                    <>
+                      <FiUserPlus className='mr-1 w-5 h-5' /> Follow
+                    </>
+                  )}
+                </Button>
+              </Tooltip>
+            )}
+            <Tooltip
+              color='warning'
+              closeDelay={2000}
+              content='Login First'
+              isDisabled={user !== null}>
               <Button
-                className={`${
-                  postData?.author?.followers.includes(user?._id)
-                    ? 'bg-success text-white'
-                    : 'bg-primary text-white'
-                } flex items-center rounded-full`}
-                isLoading={handleFollowLoading}
+                disabled={user === null}
+                className={
+                  bookmarkedPostId?.includes(postData?._id)
+                    ? 'text-primary'
+                    : 'text-default-500'
+                }
+                isLoading={handleBookMarkPostLoading}
                 size='sm'
                 spinner={<Spinner size='sm' />}
-                onClick={() => handleFollowToggle(postData?.author?._id)}>
-                {postData?.author?.followers.includes(user?._id) ? (
-                  <>
-                    <FiUserCheck className='mr-1 w-5 h-5' /> Unfollow
-                  </>
+                variant='light'
+                onClick={() => handleBookmark(postData?._id)}>
+                {bookmarkedPostId?.includes(postData?._id) ? (
+                  <FaBookmark className='w-5 h-5' />
                 ) : (
-                  <>
-                    <FiUserPlus className='mr-1 w-5 h-5' /> Follow
-                  </>
+                  <FaRegBookmark className='w-5 h-5' />
                 )}
               </Button>
-            )}
-            <Button
-              className={
-                bookmarkedPostId?.includes(postData?._id)
-                  ? 'text-primary'
-                  : 'text-default-500'
-              }
-              isLoading={handleBookMarkPostLoading}
-              size='sm'
-              spinner={<Spinner size='sm' />}
-              variant='light'
-              onClick={() => handleBookmark(postData?._id)}>
-              {bookmarkedPostId?.includes(postData?._id) ? (
-                <FaBookmark className='w-5 h-5' />
-              ) : (
-                <FaRegBookmark className='w-5 h-5' />
-              )}
-            </Button>
+            </Tooltip>
             {user?._id === postData?.author?._id && (
               <Dropdown>
                 <DropdownTrigger>
@@ -299,30 +314,44 @@ const PostDetailsCard = ({ postData }: IProps) => {
       <CardFooter className='px-6 py-4'>
         <div className='flex justify-between items-center w-full'>
           <div className='flex space-x-4'>
-            <Button
-              color={
-                !postData?.upvote?.includes(user?._id || '')
-                  ? 'default'
-                  : 'primary'
-              }
-              size='sm'
-              variant='flat'
-              onClick={() => handleUpvote(postData?._id)}>
-              <ThumbsUp className='w-5 h-5 mr-2' />
-              <span>{postData?.upvote?.length}</span>
-            </Button>
-            <Button
-              color={
-                !postData?.downvote?.includes(user?._id || '')
-                  ? 'default'
-                  : 'danger'
-              }
-              size='sm'
-              variant='flat'
-              onClick={() => handleDownvote(postData?._id)}>
-              <ThumbsDown className='w-5 h-5 mr-2' />
-              <span>{postData?.downvote?.length}</span>
-            </Button>
+            <Tooltip
+              color='warning'
+              closeDelay={2000}
+              content='Login First'
+              isDisabled={user !== null}>
+              <Button
+                disabled={user === null}
+                color={
+                  !postData?.upvote?.includes(user?._id || '')
+                    ? 'default'
+                    : 'primary'
+                }
+                size='sm'
+                variant='flat'
+                onClick={() => handleUpvote(postData?._id)}>
+                <ThumbsUp className='w-5 h-5 mr-2' />
+                <span>{postData?.upvote?.length}</span>
+              </Button>
+            </Tooltip>
+            <Tooltip
+              color='warning'
+              closeDelay={2000}
+              content='Login First'
+              isDisabled={user !== null}>
+              <Button
+                disabled={user === null}
+                color={
+                  !postData?.downvote?.includes(user?._id || '')
+                    ? 'default'
+                    : 'danger'
+                }
+                size='sm'
+                variant='flat'
+                onClick={() => handleDownvote(postData?._id)}>
+                <ThumbsDown className='w-5 h-5 mr-2' />
+                <span>{postData?.downvote?.length}</span>
+              </Button>
+            </Tooltip>
           </div>
           <div className='relative inline-block'>
             <button
