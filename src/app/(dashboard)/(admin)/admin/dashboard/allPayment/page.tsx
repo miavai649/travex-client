@@ -1,97 +1,99 @@
-'use client'
-import React from 'react'
+"use client";
+import React from "react";
 import {
   Table,
   TableHeader,
   TableColumn,
   TableBody,
   TableRow,
-  TableCell
-} from '@nextui-org/table'
-import { Chip } from '@nextui-org/chip'
-import { Avatar } from '@nextui-org/avatar'
-import { format } from 'date-fns'
+  TableCell,
+} from "@nextui-org/table";
+import { Chip } from "@nextui-org/chip";
+import { Avatar } from "@nextui-org/avatar";
+import { format } from "date-fns";
 
-import { useGetAllPaymentQuery } from '@/src/redux/features/payment/paymentApi'
-import { IPayment } from '@/src/types/payment.type'
-import Loading from '@/src/components/ui/Loading'
+import { useGetAllPaymentQuery } from "@/src/redux/features/payment/paymentApi";
+import { IPayment } from "@/src/types/payment.type";
+import Loading from "@/src/components/ui/Loading";
 
 const columns = [
-  { name: 'NAME', uid: 'name' },
-  { name: 'PAYMENT AMOUNT', uid: 'amount' },
-  { name: 'TRANSACTION ID', uid: 'transactionId' },
-  { name: 'PLAN TITLE', uid: 'planTitle' },
-  { name: 'EXPIRY DATE', uid: 'expiryDate' },
-  { name: 'STATUS', uid: 'paymentStatus' }
-]
+  { name: "NAME", uid: "name" },
+  { name: "PAYMENT AMOUNT", uid: "amount" },
+  { name: "TRANSACTION ID", uid: "transactionId" },
+  { name: "PLAN TITLE", uid: "planTitle" },
+  { name: "EXPIRY DATE", uid: "expiryDate" },
+  { name: "STATUS", uid: "paymentStatus" },
+];
 
 const PaymentHistory = () => {
   const { data: getAllPayment, isLoading: paymentLoading } =
-    useGetAllPaymentQuery(undefined)
+    useGetAllPaymentQuery(undefined);
 
-  const payments: IPayment[] = getAllPayment?.data || []
+  const payments: IPayment[] = getAllPayment?.data || [];
 
   const renderCell = (payment: IPayment, columnKey: React.Key) => {
     switch (columnKey) {
-      case 'name':
+      case "name":
         return (
-          <div className='flex items-center gap-2'>
+          <div className="flex items-center gap-2">
             <Avatar src={payment.user?.profileImage}>
               {payment.user?.name}
             </Avatar>
-            <p className='text-xs'>{payment.user?.name}</p>
+            <p className="text-xs">{payment.user?.name}</p>
           </div>
-        )
-      case 'amount':
-        return <p className='text-xs'>${payment?.amount}</p>
-      case 'transactionId':
-        return <p className='text-xs'>{payment?.transactionId}</p>
-      case 'planTitle':
-        return <p className='text-xs'>{payment?.planTitle}</p>
-      case 'expiryDate':
+        );
+      case "amount":
+        return <p className="text-xs">${payment?.amount}</p>;
+      case "transactionId":
+        return <p className="text-xs">{payment?.transactionId}</p>;
+      case "planTitle":
+        return <p className="text-xs">{payment?.planTitle}</p>;
+      case "expiryDate":
         return (
-          <p className='text-xs'>
-            {' '}
-            {format(new Date(payment?.createdAt), 'MMM dd, yyyy')}
+          <p className="text-xs">
+            {" "}
+            {format(new Date(payment?.createdAt), "MMM dd, yyyy")}
           </p>
-        )
-      case 'paymentStatus':
+        );
+      case "paymentStatus":
         return (
           <Chip
-            className='text-white'
-            color={payment?.status === 'Active' ? 'success' : 'danger'}
-            size='sm'>
+            className="text-white"
+            color={payment?.status === "Active" ? "success" : "danger"}
+            size="sm"
+          >
             {payment?.status}
           </Chip>
-        )
+        );
       default:
-        return <p>N/A</p>
+        return <p>N/A</p>;
     }
-  }
+  };
 
   if (paymentLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (payments.length === 0) {
     return (
-      <div className='text-3xl font-semibold text-center'>
+      <div className="text-3xl font-semibold text-center">
         No Payment History Available
       </div>
-    )
+    );
   }
 
   return (
     <>
-      <div className=' max-w-full overflow-x-auto pt-16'>
+      <div className=" max-w-full overflow-x-auto pt-16">
         <Table
-          aria-label='All Users Payment History'
+          aria-label="All Users Payment History"
           classNames={{
-            base: 'min-w-[640px]',
-            table: 'min-w-full',
-            th: 'bg-default-100 text-default-800 py-3 px-4',
-            td: 'py-3 px-4'
-          }}>
+            base: "min-w-[640px]",
+            table: "min-w-full",
+            th: "bg-default-100 text-default-800 py-3 px-4",
+            td: "py-3 px-4",
+          }}
+        >
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn key={column.uid}>{column.name}</TableColumn>
@@ -109,7 +111,7 @@ const PaymentHistory = () => {
         </Table>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PaymentHistory
+export default PaymentHistory;

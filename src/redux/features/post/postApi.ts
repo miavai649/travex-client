@@ -6,9 +6,24 @@ import { IPost } from "@/src/types/post.type";
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllPost: builder.query({
-      query: () => {
+      query: ({ searchTerm = "", category = "" }) => {
+        const params: Record<string, string> = {};
+
+        if (searchTerm) {
+          params.searchTerm = searchTerm;
+        }
+
+        if (category) {
+          params.category = category;
+        }
+
+        const queryString =
+          Object.keys(params).length > 0
+            ? new URLSearchParams(params).toString()
+            : "";
+
         return {
-          url: "/post/get-all",
+          url: queryString ? `/post/get-all?${queryString}` : "/post/get-all",
           method: "GET",
         };
       },
@@ -19,6 +34,7 @@ const postApi = baseApi.injectEndpoints({
       },
       providesTags: ["posts"],
     }),
+
     getCurrentUserPost: builder.query({
       query: () => {
         return {
