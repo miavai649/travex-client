@@ -92,11 +92,52 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo
       }),
       invalidatesTags: ['user', 'posts']
+    }),
+    getAllUser: builder.query({
+      query: () => {
+        return {
+          url: '/user',
+          method: 'GET'
+        }
+      },
+      transformResponse: (response: TResponseRedux<TUser[]>) => {
+        return {
+          data: response.data
+        }
+      },
+      providesTags: ['user']
+    }),
+    getSingleUser: builder.query({
+      query: (payload) => {
+        console.log(payload.userId)
+        return {
+          url: `/user/get-single-user/${payload.userId}`,
+          method: 'GET'
+        }
+      },
+      transformResponse: (response: TResponseRedux<TUser>) => {
+        return {
+          data: response.data
+        }
+      },
+      providesTags: ['user']
+    }),
+    statusToggle: builder.mutation({
+      query: (args) => {
+        return {
+          url: `/user/status-toggle/${args}`,
+          method: 'PUT',
+          body: { args }
+        }
+      },
+      invalidatesTags: ['user']
     })
   })
 })
 
 export const {
+  useGetAllUserQuery,
+  useGetSingleUserQuery,
   useLoginMutation,
   useChangePasswordMutation,
   useRegisterMutation,
@@ -105,5 +146,6 @@ export const {
   useGetCurrentUserQuery,
   useToggleBookMarkPostMutation,
   useToggleFollowUnfollowUserMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
+  useStatusToggleMutation
 } = authApi

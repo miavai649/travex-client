@@ -231,6 +231,11 @@ export default function PostCard({ post }: { post: IPost }) {
               Premium
             </span>
           )}
+          {post?.author?.role === 'ADMIN' && (
+            <span className='bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 text-xs font-semibold px-2.5 py-0.5 rounded'>
+              Admin
+            </span>
+          )}
         </div>
 
         {/* post images */}

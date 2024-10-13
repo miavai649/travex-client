@@ -11,7 +11,7 @@ import {
   IoClose
 } from 'react-icons/io5'
 import { CiGrid42 } from 'react-icons/ci'
-import { FaRegHeart } from 'react-icons/fa'
+import { FaDollarSign } from 'react-icons/fa'
 import { CgProfile } from 'react-icons/cg'
 import { RiEditLine } from 'react-icons/ri'
 import { Menu } from 'lucide-react'
@@ -21,9 +21,39 @@ import { TravexLogo } from '@/src/assets/icons'
 import { useAppDispatch } from '@/src/redux/hook'
 import { logout } from '@/src/redux/features/auth/authSlice'
 import { BsBookmarks } from 'react-icons/bs'
+import { useGetCurrentUserQuery } from '@/src/redux/features/auth/authApi'
+import { FiUsers } from 'react-icons/fi'
 
-const links = [
+const userRoutes = [
   { item: 'Profile', icon: CgProfile, link: '/dashboard/profile' },
+  { item: 'My Content', icon: CiGrid42, link: '/dashboard/my-content' },
+  { item: 'Bookmark', icon: BsBookmarks, link: '/dashboard/bookmark' },
+  { item: 'Edit Profile', icon: RiEditLine, link: '/dashboard/edit-profile' },
+  {
+    item: 'Change Password',
+    icon: IoKeyOutline,
+    link: '/dashboard/change-password'
+  },
+  { item: 'Home', icon: IoHomeOutline, link: '/' }
+]
+
+const adminRoutes = [
+  { item: 'Profile', icon: CgProfile, link: '/dashboard/profile' },
+  {
+    item: 'Users Management',
+    icon: FiUsers,
+    link: '/admin/dashboard/alluser'
+  },
+  {
+    item: 'Posts Management',
+    icon: CiGrid42,
+    link: '/admin/dashboard/allpost'
+  },
+  {
+    item: 'Payment History',
+    icon: FaDollarSign,
+    link: '/admin/dashboard/allPayment'
+  },
   { item: 'My Content', icon: CiGrid42, link: '/dashboard/my-content' },
   { item: 'Bookmark', icon: BsBookmarks, link: '/dashboard/bookmark' },
   { item: 'Edit Profile', icon: RiEditLine, link: '/dashboard/edit-profile' },
@@ -48,6 +78,11 @@ const Sidebar = () => {
     dispatch(logout())
     router.push('/')
   }
+
+  const { data: currentUserData } = useGetCurrentUserQuery({})
+
+  const links =
+    currentUserData?.data?.role === 'ADMIN' ? adminRoutes : userRoutes
 
   return (
     <>
