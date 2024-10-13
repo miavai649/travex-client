@@ -1,53 +1,40 @@
-# Next.js & NextUI Template
+# Travex - Travel Tips & Destination Guides
 
-This is a template for creating applications using Next.js 14 (app directory) and NextUI (v2).
+## Overview
 
-[Try it on CodeSandbox](https://githubbox.com/nextui-org/next-app-template)
+**Travex** is a community-driven platform designed for travel enthusiasts to share their experiences, tips, and guides. It allows users to create personal profiles, engage with others, and access exclusive premium content. With a focus on social interaction and informative travel content, Travex empowers users to explore new destinations and make informed travel decisions.
 
-## Technologies Used
+---
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
+## Features
 
-## How to Use
+- **User Authentication**: Secure login and registration using JWT for a safe user experience.
+- **Profile Management**: Users can customize their profiles, upload pictures, and follow others.
+- **Post Creation**: A rich text editor enables users to write and format detailed travel guides and tips, complete with images.
+- **Voting System**: Community engagement through upvoting and downvoting posts to highlight the best content.
+- **Commenting**: Users can comment on posts, and also can edit or delete their own comment.
+- **Payment Integration**: Access premium content through payment gateways like Aamarpay.
+- **Dynamic News Feed**: An engaging feed that showcases the latest community posts, with filtering and searching options.
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices for seamless browsing.
 
-### Use the template with create-next-app
+---
 
-To create a new project based on this template using `create-next-app`, run the following command:
+## Technology Stack
 
-```bash
-npx create-next-app -e https://github.com/nextui-org/next-app-template
-```
+- **Frontend**: Nextjs, Tailwind CSS, Sonner, Redux Persist, React Icons, React Hook Form, date-fns, Dayjs
+- **Backend**: Node.js, Express.js, TypeScript, Axios, Bcryptjs, Cookie Parser, Cors, Dotenv, HTTP status
+- **Database**: Zod
+- **Database**: MongoDB, Mongoose
+- **State Management**: Redux Toolkit
+- **Authentication**: JWT
+- **API Communication**: RTK Query
+- **UI Library**: Next ui and Tailwind CSS
+- **Payment Gateway**: AamarPay
 
-### Install dependencies
+## Installation
 
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+1. **Clone the repository:**
 
-```bash
-npm install
-```
-
-### Run the development server
-
-```bash
-npm run dev
-```
-
-### Setup pnpm (optional)
-
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
-
-```bash
-public-hoist-pattern[]=*@nextui-org/*
-```
-
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
-
-## License
-
-Licensed under the [MIT license](https://github.com/nextui-org/next-app-template/blob/main/LICENSE).
+   ```bash
+   git clone https://github.com/miavai649/travex-client
+   ```
