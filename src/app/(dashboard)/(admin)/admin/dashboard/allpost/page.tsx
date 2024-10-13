@@ -10,14 +10,8 @@ import {
 } from '@nextui-org/table'
 import { Avatar } from '@nextui-org/avatar'
 import { useRouter } from 'next/navigation'
-import {
-  useDeletePostMutation,
-  useGetAllPostQuery
-} from '@/src/redux/features/post/postApi'
-import { IPost } from '@/src/types/post.type'
 import { Button } from '@nextui-org/button'
 import { DeleteIcon, EyeIcon } from 'lucide-react'
-import Loading from '@/src/components/ui/Loading'
 import { Chip } from '@nextui-org/chip'
 import {
   Modal,
@@ -27,6 +21,13 @@ import {
   ModalFooter
 } from '@nextui-org/modal'
 import { toast } from 'sonner'
+
+import Loading from '@/src/components/ui/Loading'
+import { IPost } from '@/src/types/post.type'
+import {
+  useDeletePostMutation,
+  useGetAllPostQuery
+} from '@/src/redux/features/post/postApi'
 import { TResponse } from '@/src/types'
 
 const columns = [
@@ -71,6 +72,7 @@ export default function ManageAllPostPage() {
           id: postToDelete
         }
         const res = (await deleteSinglePost(deletePostData)) as TResponse<IPost>
+
         if (res.error) {
           toast.error(res.error.data.message, {
             duration: 2000,
@@ -98,10 +100,10 @@ export default function ManageAllPostPage() {
         return (
           <div className='flex items-center gap-3'>
             <Avatar
-              src={post.author.profileImage}
+              className='bg-primary/10 text-primary'
               name={post.author.name}
               size='sm'
-              className='bg-primary/10 text-primary'
+              src={post.author.profileImage}
             />
             <p className='font-medium'>{post.author.name}</p>
           </div>
@@ -110,7 +112,7 @@ export default function ManageAllPostPage() {
         return <p className='font-medium text-default-600'>{post.title}</p>
       case 'category':
         return (
-          <Chip size='sm' variant='flat' color='primary'>
+          <Chip color='primary' size='sm' variant='flat'>
             {post.category}
           </Chip>
         )
@@ -136,9 +138,9 @@ export default function ManageAllPostPage() {
             </Button>
             <Button
               isIconOnly
+              color='danger'
               size='sm'
               variant='light'
-              color='danger'
               onClick={() => openDeleteModal(post._id)}>
               <DeleteIcon className='w-4 h-4' />
             </Button>
@@ -173,7 +175,7 @@ export default function ManageAllPostPage() {
 
   return (
     <>
-      <div className='max-w-full overflow-x-auto'>
+      <div className='max-w-full overflow-x-auto pt-16'>
         <Table
           aria-label='Post table with data from API'
           classNames={{
@@ -192,7 +194,7 @@ export default function ManageAllPostPage() {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody items={posts} emptyContent='No posts to display'>
+          <TableBody emptyContent='No posts to display' items={posts}>
             {(item) => (
               <TableRow key={item._id} className='hover:bg-default-50'>
                 {(columnKey) => (
@@ -205,15 +207,15 @@ export default function ManageAllPostPage() {
       </div>
 
       <Modal
-        isOpen={isOpen}
-        onClose={closeDeleteModal}
-        placement='center'
         classNames={{
           base: 'bg-background rounded-lg',
           header: 'border-b border-divider',
           footer: 'border-t border-divider',
           closeButton: 'hover:bg-default-100 active:bg-default-200'
-        }}>
+        }}
+        isOpen={isOpen}
+        placement='center'
+        onClose={closeDeleteModal}>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
             <h2 className='text-2xl font-bold'>Confirm Deletion</h2>

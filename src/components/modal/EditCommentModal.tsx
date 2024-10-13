@@ -1,93 +1,96 @@
-'use client'
-import { FieldValues, SubmitHandler } from 'react-hook-form'
-import { Modal, ModalContent, ModalHeader, ModalBody } from '@nextui-org/modal'
-import { Button } from '@nextui-org/button'
-import { Spinner } from '@nextui-org/spinner'
-import { toast } from 'sonner'
+"use client";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/modal";
+import { Button } from "@nextui-org/button";
+import { Spinner } from "@nextui-org/spinner";
+import { toast } from "sonner";
 
-import TForm from '../form/TForm'
-import TInput from '../form/TInput'
+import TForm from "../form/TForm";
+import TInput from "../form/TInput";
 
-import { useUpdateCommentMutation } from '@/src/redux/features/comment/commentApi'
-import { TResponse } from '@/src/types'
-import { TComment } from '@/src/types/comment.type'
+import { useUpdateCommentMutation } from "@/src/redux/features/comment/commentApi";
+import { TResponse } from "@/src/types";
+import { TComment } from "@/src/types/comment.type";
 
 interface IProps {
-  isOpen: boolean
-  onClose: () => void
-  commentId: string
-  comment: string
+  isOpen: boolean;
+  onClose: () => void;
+  commentId: string;
+  comment: string;
 }
 
 const EditCommentModal = ({ isOpen, onClose, commentId, comment }: IProps) => {
   // update comment rtk query
   const [updateComment, { isLoading: updateCommentLoading }] =
-    useUpdateCommentMutation()
+    useUpdateCommentMutation();
 
   const commentUpdateDefaultValue = {
-    comment: comment
-  }
+    comment: comment,
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const updateCommentData = {
       data: {
-        ...data
+        ...data,
       },
-      commentId
-    }
+      commentId,
+    };
 
     try {
       const res = (await updateComment(
-        updateCommentData
-      )) as TResponse<TComment>
+        updateCommentData,
+      )) as TResponse<TComment>;
 
       if (res.error) {
         toast.error(res.error.data.message, {
-          duration: 2000
-        })
+          duration: 2000,
+        });
       } else {
-        toast.success('Comment updated successfully', {
-          duration: 2000
-        })
+        toast.success("Comment updated successfully", {
+          duration: 2000,
+        });
       }
     } catch (error) {
-      toast.error('Something went wrong', { duration: 2000 })
+      toast.error("Something went wrong", { duration: 2000 });
     } finally {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
     <Modal
-      backdrop={'blur'}
+      backdrop={"blur"}
       classNames={{
-        base: 'bg-background',
-        header: 'border-b border-divider',
-        footer: 'border-t border-divider',
-        closeButton: 'hover:bg-default-100 active:bg-default-200'
+        base: "bg-background",
+        header: "border-b border-divider",
+        footer: "border-t border-divider",
+        closeButton: "hover:bg-default-100 active:bg-default-200",
       }}
       isOpen={isOpen}
-      placement='center'
-      onOpenChange={onClose}>
+      placement="center"
+      onOpenChange={onClose}
+    >
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='flex flex-col gap-1'>
-              <h2 className='text-xl font-bold'>Edit Comment</h2>
+            <ModalHeader className="flex flex-col gap-1">
+              <h2 className="text-xl font-bold">Edit Comment</h2>
             </ModalHeader>
-            <ModalBody className='my-8'>
+            <ModalBody className="my-8">
               <TForm
                 defaultValues={commentUpdateDefaultValue}
-                onSubmit={onSubmit}>
-                <TInput label='New Comment' name='comment' />
-                <div className='mt-4 flex-1 w-2/6'>
+                onSubmit={onSubmit}
+              >
+                <TInput label="New Comment" name="comment" />
+                <div className="mt-4 flex-1 w-2/6">
                   <Button
-                    className='w-full'
-                    color='primary'
+                    className="w-full"
+                    color="primary"
                     isLoading={updateCommentLoading}
-                    size='md'
-                    spinner={<Spinner color='current' size='sm' />}
-                    type='submit'>
+                    size="md"
+                    spinner={<Spinner color="current" size="sm" />}
+                    type="submit"
+                  >
                     Update
                   </Button>
                 </div>
@@ -97,7 +100,7 @@ const EditCommentModal = ({ isOpen, onClose, commentId, comment }: IProps) => {
         )}
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
-export default EditCommentModal
+export default EditCommentModal;

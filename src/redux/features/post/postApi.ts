@@ -1,93 +1,93 @@
-import { baseApi } from '../../api/baseApi'
+import { baseApi } from "../../api/baseApi";
 
-import { TResponseRedux } from '@/src/types'
-import { IPost } from '@/src/types/post.type'
+import { TResponseRedux } from "@/src/types";
+import { IPost } from "@/src/types/post.type";
 
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllPost: builder.query({
       query: () => {
         return {
-          url: '/post/get-all',
-          method: 'GET'
-        }
+          url: "/post/get-all",
+          method: "GET",
+        };
       },
       transformResponse: (response: TResponseRedux<IPost[]>) => {
         return {
-          data: response.data
-        }
+          data: response.data,
+        };
       },
-      providesTags: ['posts']
+      providesTags: ["posts"],
     }),
     getCurrentUserPost: builder.query({
       query: () => {
         return {
-          url: '/post/get-current-user-post',
-          method: 'GET'
-        }
+          url: "/post/get-current-user-post",
+          method: "GET",
+        };
       },
       transformResponse: (response: TResponseRedux<IPost[]>) => {
         return {
-          data: response.data
-        }
+          data: response.data,
+        };
       },
-      providesTags: ['posts']
+      providesTags: ["posts"],
     }),
     getSinglePost: builder.query({
       query: (params) => {
         return {
           url: `/post/get-single/${params}`,
-          method: 'GET'
-        }
+          method: "GET",
+        };
       },
       transformResponse: (response: TResponseRedux<IPost>) => {
         return {
-          data: response.data
-        }
+          data: response.data,
+        };
       },
-      providesTags: ['posts']
+      providesTags: ["posts"],
     }),
     handleVoting: builder.mutation({
       query: (payload) => {
         return {
           url: `/post/voting/${payload?.id}`,
-          method: 'PUT',
-          body: payload.data
-        }
+          method: "PUT",
+          body: payload.data,
+        };
       },
-      invalidatesTags: ['posts']
+      invalidatesTags: ["posts"],
     }),
     addPost: builder.mutation({
       query: (payload) => {
         return {
           url: `/post/create-post`,
-          method: 'POST',
-          body: payload
-        }
+          method: "POST",
+          body: payload,
+        };
       },
-      invalidatesTags: ['posts']
+      invalidatesTags: ["posts"],
     }),
     updatePost: builder.mutation({
       query: (payload) => {
         return {
           url: `/post/${payload.id}`,
-          method: 'PUT',
-          body: payload.data
-        }
+          method: "PUT",
+          body: payload.data,
+        };
       },
-      invalidatesTags: ['posts']
+      invalidatesTags: ["posts"],
     }),
     deletePost: builder.mutation({
       query: (payload) => {
         return {
           url: `/post/${payload.id}`,
-          method: 'DELETE'
-        }
+          method: "DELETE",
+        };
       },
-      invalidatesTags: ['posts']
-    })
-  })
-})
+      invalidatesTags: ["posts"],
+    }),
+  }),
+});
 
 export const {
   useGetAllPostQuery,
@@ -96,5 +96,5 @@ export const {
   useAddPostMutation,
   useGetCurrentUserPostQuery,
   useUpdatePostMutation,
-  useDeletePostMutation
-} = postApi
+  useDeletePostMutation,
+} = postApi;

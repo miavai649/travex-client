@@ -30,20 +30,21 @@ const TSelect = ({
     <div>
       <Select
         {...register(name)}
-        className='min-w-full sm:min-w-[225px]'
-        errorMessage={(errors[name]?.message as string) ?? ''}
+        className="min-w-full sm:min-w-[225px]"
+        errorMessage={(errors[name]?.message as string) ?? ""}
         isDisabled={disabled}
         isInvalid={!!errors[name]}
         label={label}
         placeholder={placeholder}
         size={size}
-        variant={variant}>
+        variant={variant}
+      >
         {options.map((option) => (
           <SelectItem key={option.key}>{option.label}</SelectItem>
         ))}
       </Select>
     </div>
-  )
+  );
 };
 
 export default TSelect;

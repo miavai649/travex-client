@@ -1,48 +1,49 @@
-'use client'
+"use client";
 
-import { Input } from '@nextui-org/input'
-import { useState } from 'react'
-import { useFormContext } from 'react-hook-form'
-import { IoMdEyeOff } from 'react-icons/io'
-import { BsEyeFill } from 'react-icons/bs'
+import { Input } from "@nextui-org/input";
+import { useState } from "react";
+import { useFormContext } from "react-hook-form";
+import { IoMdEyeOff } from "react-icons/io";
+import { BsEyeFill } from "react-icons/bs";
 
-import { IInput } from '@/src/types'
+import { IInput } from "@/src/types";
 
 interface IProps extends IInput {}
 
 const TPasswordInput = ({
-  variant = 'bordered',
-  size = 'md',
+  variant = "bordered",
+  size = "md",
   placeholder,
   isRequired = false,
-  type = 'text',
+  type = "text",
   label,
-  name
+  name,
 }: IProps) => {
   const {
     register,
-    formState: { errors }
-  } = useFormContext()
+    formState: { errors },
+  } = useFormContext();
 
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
 
-  const toggleVisibility = () => setIsVisible(!isVisible)
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   return (
     <Input
-      errorMessage={(errors[name]?.message as string) ?? ''}
+      errorMessage={(errors[name]?.message as string) ?? ""}
       isInvalid={!!errors[name]}
       {...register(name)}
       endContent={
         <button
-          aria-label='toggle password visibility'
-          className='focus:outline-none'
-          type='button'
-          onClick={toggleVisibility}>
+          aria-label="toggle password visibility"
+          className="focus:outline-none"
+          type="button"
+          onClick={toggleVisibility}
+        >
           {isVisible ? (
-            <IoMdEyeOff className='text-2xl text-default-400 pointer-events-none' />
+            <IoMdEyeOff className="text-2xl text-default-400 pointer-events-none" />
           ) : (
-            <BsEyeFill className='text-2xl text-default-400 pointer-events-none' />
+            <BsEyeFill className="text-2xl text-default-400 pointer-events-none" />
           )}
         </button>
       }
@@ -50,10 +51,10 @@ const TPasswordInput = ({
       label={label}
       placeholder={placeholder}
       size={size}
-      type={isVisible ? 'text' : type}
+      type={isVisible ? "text" : type}
       variant={variant}
     />
-  )
-}
+  );
+};
 
-export default TPasswordInput
+export default TPasswordInput;

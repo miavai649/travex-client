@@ -11,13 +11,14 @@ import {
 import { Chip, ChipProps } from '@nextui-org/chip'
 import { Avatar } from '@nextui-org/avatar'
 import { useRouter } from 'next/navigation'
+import { EyeIcon } from 'lucide-react'
+import { Button } from '@nextui-org/button'
+
 import { TUser } from '@/src/types'
-import { DeleteIcon, EyeIcon } from 'lucide-react'
 import {
   useGetAllUserQuery,
   useStatusToggleMutation
 } from '@/src/redux/features/auth/authApi'
-import { Button } from '@nextui-org/button'
 import Loading from '@/src/components/ui/Loading'
 import { useAppSelector } from '@/src/redux/hook'
 import { useCurrentUser } from '@/src/redux/features/auth/authSlice'
@@ -65,10 +66,10 @@ export default function AllUser() {
         return (
           <div className='flex items-center gap-3'>
             <Avatar
-              src={user.profileImage}
+              className='bg-primary/10 text-primary'
               name={user.name}
               size='sm'
-              className='bg-primary/10 text-primary'
+              src={user.profileImage}
             />
             <p className='font-medium'>{user.name}</p>
           </div>
@@ -101,8 +102,8 @@ export default function AllUser() {
             className='capitalize cursor-pointer'
             color={statusColorMap[user.status]}
             size='sm'
-            onClick={() => handleUpdateStatus(user._id)}
-            variant='dot'>
+            variant='dot'
+            onClick={() => handleUpdateStatus(user._id)}>
             {user.status}
           </Chip>
         )
@@ -146,7 +147,7 @@ export default function AllUser() {
   }
 
   return (
-    <div className='max-w-full overflow-x-auto'>
+    <div className='max-w-full overflow-x-auto pt-16'>
       <Table
         aria-label='User table with data from API'
         classNames={{

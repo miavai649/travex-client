@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Table,
   TableHeader,
@@ -10,10 +10,10 @@ import {
 } from '@nextui-org/table'
 import { Chip } from '@nextui-org/chip'
 import { Avatar } from '@nextui-org/avatar'
+import { format } from 'date-fns'
 
 import { useGetAllPaymentQuery } from '@/src/redux/features/payment/paymentApi'
 import { IPayment } from '@/src/types/payment.type'
-import { format } from 'date-fns'
 import Loading from '@/src/components/ui/Loading'
 
 const columns = [
@@ -83,10 +83,15 @@ const PaymentHistory = () => {
 
   return (
     <>
-      <div className='overflow-x-auto'>
+      <div className=' max-w-full overflow-x-auto pt-16'>
         <Table
           aria-label='All Users Payment History'
-          className='min-w-[640px] md:w-full'>
+          classNames={{
+            base: 'min-w-[640px]',
+            table: 'min-w-full',
+            th: 'bg-default-100 text-default-800 py-3 px-4',
+            td: 'py-3 px-4'
+          }}>
           <TableHeader columns={columns}>
             {(column) => (
               <TableColumn key={column.uid}>{column.name}</TableColumn>

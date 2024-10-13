@@ -1,4 +1,4 @@
-import { baseApi } from '../../api/baseApi'
+import { baseApi } from "../../api/baseApi";
 
 const paymentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -6,23 +6,23 @@ const paymentApi = baseApi.injectEndpoints({
       query: (payload) => {
         return {
           url: `/payment/create`,
-          method: 'POST',
-          body: payload
-        }
+          method: "POST",
+          body: payload,
+        };
       },
-      invalidatesTags: ['payment']
+      invalidatesTags: ["payment"],
     }),
     getAllPayment: builder.query({
       query: (args) => {
         return {
           url: `/payment/get-all`,
-          method: 'GET',
-          body: args
-        }
+          method: "GET",
+          body: args,
+        };
       },
-      providesTags: ['payment']
-    })
-  })
-})
+      providesTags: ["payment"],
+    }),
+  }),
+});
 
-export const { useCreatePaymentMutation, useGetAllPaymentQuery } = paymentApi
+export const { useCreatePaymentMutation, useGetAllPaymentQuery } = paymentApi;
