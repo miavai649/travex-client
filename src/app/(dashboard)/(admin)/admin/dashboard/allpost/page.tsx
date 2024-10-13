@@ -163,6 +163,14 @@ export default function ManageAllPostPage() {
     return <Loading />
   }
 
+  if (posts.length === 0) {
+    return (
+      <div className='text-3xl font-semibold text-center'>
+        No Post History Available
+      </div>
+    )
+  }
+
   return (
     <>
       <div className='max-w-full overflow-x-auto'>

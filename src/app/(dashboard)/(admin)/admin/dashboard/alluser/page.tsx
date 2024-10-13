@@ -137,6 +137,14 @@ export default function AllUser() {
     return <Loading />
   }
 
+  if (users.length === 0) {
+    return (
+      <div className='text-3xl font-semibold text-center'>
+        No User History Available
+      </div>
+    )
+  }
+
   return (
     <div className='max-w-full overflow-x-auto'>
       <Table
